@@ -133,11 +133,8 @@ const Game = () => {
 
     // Update score and show real-time GCT update
     const value = isSpecial ? 25 : 1;
-    setScore((prev) => {
-      const newScore = prev + value;
-      updateGCT(value); // Update GCT in real-time
-      return newScore;
-    });
+    setScore((prev) => prev + value);
+    updateGCT(value); // Update GCT in real-time
     
     // Show toast for special coins
     if (isSpecial) {
@@ -180,7 +177,7 @@ const Game = () => {
       const newCoin: CoinType = {
         id: crypto.randomUUID(),
         x,
-        y: -100,
+        y: -100, // Start above the visible area
         duration,
         isSpecial,
         size,
@@ -264,9 +261,9 @@ const Game = () => {
         </div>
       </div>
 
-      {/* Time progress bar */}
+      {/* Time progress bar - moved higher up for better visibility */}
       {isPlaying && (
-        <div className="absolute top-20 left-6 right-6 z-40">
+        <div className="absolute top-1/3 left-6 right-6 z-40">
           <Progress value={(timeLeft / 60) * 100} className="h-2 bg-white/30" indicatorClassName="bg-gradient-to-r from-game-blue to-game-green" />
         </div>
       )}

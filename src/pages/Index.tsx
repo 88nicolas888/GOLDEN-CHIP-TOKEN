@@ -22,6 +22,16 @@ const Index = () => {
         <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-game-blue/20 opacity-30"></div>
       </div>
 
+      {/* User balance */}
+      {user && (
+        <div className="absolute top-4 left-4 z-50">
+          <div className="glass rounded-full px-5 py-2">
+            <span className="font-bold text-white">Your Balance: </span>
+            <span className="ml-2 text-xl font-bold text-game-yellow">{user.gct} GCT</span>
+          </div>
+        </div>
+      )}
+
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12 page-transition">
         <div className="perspective mb-12">
           <div className="preserve-3d animate-spin-slow">

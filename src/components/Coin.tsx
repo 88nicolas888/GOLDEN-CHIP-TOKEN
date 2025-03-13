@@ -42,6 +42,7 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
       style={{
         '--fall-duration': `${coin.duration}s`,
         left: `${coin.x}px`,
+        top: '0px', // Ensure the coin starts at the top
         width: `${coin.size}px`,
         height: `${coin.size}px`,
         pointerEvents: isCollected ? 'none' : 'auto',
