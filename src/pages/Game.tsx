@@ -225,19 +225,23 @@ const Game = () => {
   return (
     <div 
       ref={gameContainerRef}
-      className="game-container relative min-h-screen"
+      className="game-container relative min-h-screen bg-gradient-to-b from-gray-900 to-gray-800"
     >
       {/* Game HUD */}
       <div className="absolute top-4 left-0 right-0 z-50 flex justify-between items-center px-6">
         <div className="glass rounded-full px-5 py-2 flex flex-col sm:flex-row sm:items-center gap-2">
           <div>
-            <span className="font-bold">Score: </span>
-            <span className="ml-2 text-xl font-bold">{score} GCT</span>
+            <span className="font-bold text-white">Balance: </span>
+            <span className="ml-2 text-xl font-bold text-game-yellow">{user?.gct} GCT</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-white">Score: </span>
+            <span className="ml-2 text-xl font-bold text-game-green">{score} GCT</span>
           </div>
           {isPlaying && (
             <div className="flex items-center gap-2">
-              <span className="font-bold">Time: </span>
-              <span className="ml-2 text-xl font-bold">{formatTime(timeLeft)}</span>
+              <span className="font-bold text-white">Time: </span>
+              <span className="ml-2 text-xl font-bold text-game-blue">{formatTime(timeLeft)}</span>
             </div>
           )}
         </div>
@@ -246,14 +250,14 @@ const Game = () => {
           <Button 
             onClick={() => navigate('/leaderboard')} 
             variant="outline"
-            className="glass rounded-full"
+            className="glass rounded-full text-white border-game-blue hover:bg-game-blue/20"
           >
             Leaderboard
           </Button>
           <Button 
             onClick={() => navigate('/')} 
             variant="outline"
-            className="glass rounded-full"
+            className="glass rounded-full text-white border-game-green hover:bg-game-green/20"
           >
             Home
           </Button>
@@ -263,46 +267,50 @@ const Game = () => {
       {/* Time progress bar */}
       {isPlaying && (
         <div className="absolute top-20 left-6 right-6 z-40">
-          <Progress value={(timeLeft / 60) * 100} className="h-2 bg-white/30" />
+          <Progress value={(timeLeft / 60) * 100} className="h-2 bg-white/30" indicatorClassName="bg-gradient-to-r from-game-blue to-game-green" />
         </div>
       )}
 
       {/* Game Content */}
       {!gameStarted && cooldownTime <= 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/20 backdrop-blur-sm">
-          <h1 className="text-4xl font-bold mb-8 text-white">Coin Catcher</h1>
-          <p className="text-xl mb-8 text-white text-center max-w-lg">
-            Click on the falling coins to collect them. You have 60 seconds!
-          </p>
-          <Button 
-            onClick={startGame}
-            className="bg-gradient-to-r from-game-green to-game-blue text-white text-xl px-8 py-6 rounded-full shadow-lg animate-pulse-scale"
-          >
-            Start Game
-          </Button>
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
+          <div className="glass p-8 rounded-2xl max-w-lg">
+            <h1 className="text-4xl font-bold mb-6 text-white bg-clip-text text-transparent bg-gradient-to-r from-game-green to-game-blue">GCT AIRDROP</h1>
+            <p className="text-xl mb-8 text-white text-center">
+              Collect falling GCT tokens to increase your crypto balance! You have 60 seconds!
+            </p>
+            <Button 
+              onClick={startGame}
+              className="bg-gradient-to-r from-game-green to-game-blue text-white text-xl px-8 py-6 rounded-full shadow-lg animate-pulse-scale w-full"
+            >
+              Start Mining
+            </Button>
+          </div>
         </div>
       )}
 
       {/* Cooldown screen */}
       {!gameStarted && cooldownTime > 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/20 backdrop-blur-sm">
-          <h1 className="text-4xl font-bold mb-8 text-white">Game Cooldown</h1>
-          <div className="text-2xl mb-8 text-white text-center">
-            <p className="mb-4">You can play again in:</p>
-            <div className="text-4xl font-bold mb-6">{formatTime(cooldownTime)}</div>
-            <Progress value={(cooldownTime / (5 * 60)) * 100} className="h-4 w-64 mx-auto mb-8" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
+          <div className="glass p-8 rounded-2xl max-w-lg">
+            <h1 className="text-4xl font-bold mb-6 text-white">Mining Cooldown</h1>
+            <div className="text-2xl mb-8 text-white text-center">
+              <p className="mb-4">Next mining session available in:</p>
+              <div className="text-4xl font-bold mb-6 text-game-yellow">{formatTime(cooldownTime)}</div>
+              <Progress value={(cooldownTime / (5 * 60)) * 100} className="h-4 w-64 mx-auto mb-8 bg-gray-700" indicatorClassName="bg-gradient-to-r from-game-orange to-game-yellow" />
+            </div>
+            <Button 
+              onClick={() => navigate('/')} 
+              className="bg-gradient-to-r from-game-purple to-game-pink text-white px-6 py-3 rounded-full shadow-lg w-full"
+            >
+              Back to Home
+            </Button>
           </div>
-          <Button 
-            onClick={() => navigate('/')} 
-            className="bg-gradient-to-r from-game-purple to-game-pink text-white px-6 py-3 rounded-full shadow-lg"
-          >
-            Back to Home
-          </Button>
         </div>
       )}
 
       {gameStarted && countdown > 0 && (
-        <div className="absolute inset-0 flex items-center justify-center z-50 bg-black/20 backdrop-blur-sm">
+        <div className="absolute inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
           <div className="text-8xl font-bold text-white animate-pulse-scale">
             {countdown}
           </div>
@@ -318,25 +326,27 @@ const Game = () => {
       ))}
 
       {gameStarted && !isPlaying && countdown === 0 && cooldownTime > 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/20 backdrop-blur-sm">
-          <h1 className="text-4xl font-bold mb-4 text-white">Game Over!</h1>
-          <p className="text-2xl mb-6 text-white">
-            Your score: <span className="font-bold">{score} GCT</span>
-          </p>
-          <p className="text-xl mb-6 text-white">
-            Current balance: <span className="font-bold">{user?.gct} GCT</span>
-          </p>
-          <div className="mb-6">
-            <p className="text-xl text-white mb-2">Cooldown:</p>
-            <div className="text-2xl font-bold text-white mb-2">{formatTime(cooldownTime)}</div>
-            <Progress value={(cooldownTime / (5 * 60)) * 100} className="h-3 w-64" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
+          <div className="glass p-8 rounded-2xl max-w-lg">
+            <h1 className="text-4xl font-bold mb-4 text-white">Mining Session Ended!</h1>
+            <p className="text-2xl mb-6 text-white">
+              Session reward: <span className="font-bold text-game-yellow">{score} GCT</span>
+            </p>
+            <p className="text-xl mb-6 text-white">
+              Wallet balance: <span className="font-bold text-game-green">{user?.gct} GCT</span>
+            </p>
+            <div className="mb-6">
+              <p className="text-xl text-white mb-2">Cooldown period:</p>
+              <div className="text-2xl font-bold text-game-yellow mb-2">{formatTime(cooldownTime)}</div>
+              <Progress value={(cooldownTime / (5 * 60)) * 100} className="h-3 w-full bg-gray-700" indicatorClassName="bg-gradient-to-r from-game-orange to-game-yellow" />
+            </div>
+            <Button 
+              onClick={() => navigate('/leaderboard')}
+              className="bg-gradient-to-r from-game-purple to-game-pink text-white px-6 py-3 rounded-full shadow-lg w-full"
+            >
+              View Leaderboard
+            </Button>
           </div>
-          <Button 
-            onClick={() => navigate('/leaderboard')}
-            className="bg-gradient-to-r from-game-purple to-game-pink text-white px-6 py-3 rounded-full shadow-lg"
-          >
-            View Leaderboard
-          </Button>
         </div>
       )}
     </div>
