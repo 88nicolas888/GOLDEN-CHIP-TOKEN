@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 @tailwind base;
@@ -54,6 +55,10 @@
 
   .perspective {
     perspective: 1000px;
+  }
+  
+  .perspective-500 {
+    perspective: 500px;
   }
 
   .preserve-3d {
@@ -112,15 +117,16 @@
   height: 100%;
   border-radius: 50%;
   backface-visibility: hidden;
-  background-image: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
 }
 
 .coin-front {
   transform: rotateY(0deg);
+  z-index: 2;
 }
 
 .coin-back {
   transform: rotateY(180deg);
+  z-index: 1;
 }
 
 /* Fall animation */
@@ -155,16 +161,16 @@
 
 /* Special coin glow effect */
 .special-coin {
-  box-shadow: 0 0 15px theme('colors.game.yellow'), 0 0 30px theme('colors.game.yellow');
+  filter: drop-shadow(0 0 15px theme('colors.game.yellow'));
   animation: glow 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 5px theme('colors.game.yellow'), 0 0 10px theme('colors.game.yellow');
+    filter: drop-shadow(0 0 5px theme('colors.game.yellow'));
   }
   to {
-    box-shadow: 0 0 20px theme('colors.game.yellow'), 0 0 30px theme('colors.game.orange');
+    filter: drop-shadow(0 0 20px theme('colors.game.yellow'));
   }
 }
 
@@ -254,4 +260,69 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Page transitions */
+@keyframes page-transition {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced 3D effect */
+.coin-3d-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(-4px);
+  border-radius: 50%;
+  background: linear-gradient(to right, #d4a456, #ffd700, #d4a456);
+}
+
+/* Blockchain node visualization */
+.blockchain-node {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: theme('colors.game.blue');
+  position: absolute;
+  opacity: 0.3;
+}
+
+.blockchain-line {
+  height: 1px;
+  background-color: theme('colors.game.blue');
+  position: absolute;
+  opacity: 0.2;
+  transform-origin: 0 0;
+}
+
+/* Animate route transitions */
+.animate-route-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.animate-route-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.animate-route-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.animate-route-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 300ms, transform 300ms;
 }
