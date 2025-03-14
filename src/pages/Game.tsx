@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -160,7 +159,6 @@ const Game = () => {
       description: `You collected ${score} GCT! Your current balance is ${user?.gct} GCT. You can play again in 5 minutes.`,
     });
 
-    // We're removing the end game screen as requested
     // Navigate to leaderboard automatically after a short delay
     setTimeout(() => {
       navigate('/leaderboard');
@@ -327,8 +325,6 @@ const Game = () => {
           onClick={() => handleCoinClick(coin.id, coin.isSpecial)}
         />
       ))}
-
-      {/* Removed the game over screen as requested */}
     </div>
   );
 };
