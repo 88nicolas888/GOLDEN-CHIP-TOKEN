@@ -58,7 +58,9 @@ const Index = () => {
               {/* Coin front face */}
               <div className="absolute inset-0 rounded-full flex items-center justify-center preserve-3d backface-hidden" 
                 style={{ transform: "translateZ(2px)" }}>
-                <span className="text-white font-bold text-2xl drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">GCT</span>
+                <div className="text-white font-bold flex flex-col items-center justify-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">
+                  <span className="text-2xl">GCT</span>
+                </div>
               </div>
               
               {/* Coin back face */}
@@ -67,7 +69,9 @@ const Index = () => {
                   transform: "rotateY(180deg) translateZ(2px)",
                   background: "radial-gradient(circle at 70% 30%, rgba(255,255,255,0.9) 0%, #E0AF68 25%, #D4A456 100%)"
                 }}>
-                <span className="text-white font-bold text-2xl drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">GCT</span>
+                <div className="text-white font-bold flex flex-col items-center justify-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">
+                  <span className="text-2xl">GCT</span>
+                </div>
               </div>
               
               {/* Coin edge */}
@@ -140,3 +144,4 @@ const Index = () => {
 };
 
 export default Index;
+

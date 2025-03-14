@@ -39,7 +39,7 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
   const shinePositionBack = `${Math.random() * 100}% ${Math.random() * 100}%`;
 
   // For special coins, determine a horizontal starting position and movement pattern
-  const specialCoinStyle = coin.isSpecial ? {
+  const specialCoinStyles = coin.isSpecial ? {
     top: `${Math.random() * 70 + 10}vh`, // Random vertical position between 10-80% of viewport height
     left: '-100px', // Start from left outside the screen
     animationName: 'horizontal-fall', // Custom animation for horizontal movement
@@ -48,20 +48,23 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
     animationFillMode: 'forwards'
   } : {};
 
+  // Create a combined style object with all properties
+  const coinStyle = {
+    '--fall-duration': `${coin.duration}s`,
+    left: coin.isSpecial ? 'auto' : `${coin.x}px`,
+    top: coin.isSpecial ? 'auto' : '0px', // Non-special coins start at the top
+    width: `${coin.size}px`,
+    height: `${coin.size}px`,
+    pointerEvents: isCollected ? 'none' as const : 'auto' as const,
+    ...specialCoinStyles
+  };
+
   return (
     <div
       className={`coin perspective ${isCollected ? 'animate-collect' : coin.isSpecial ? 'special-coin' : 'animate-fall'} ${
         coin.isSpecial ? 'special-coin' : ''
       }`}
-      style={{
-        '--fall-duration': `${coin.duration}s`,
-        left: coin.isSpecial ? 'auto' : `${coin.x}px`,
-        top: coin.isSpecial ? 'auto' : '0px', // Non-special coins start at the top
-        width: `${coin.size}px`,
-        height: `${coin.size}px`,
-        pointerEvents: isCollected ? 'none' : 'auto',
-        ...specialCoinStyle
-      } as React.CSSProperties}
+      style={coinStyle as React.CSSProperties}
       onClick={handleClick}
     >
       <div
@@ -126,3 +129,4 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
     </div>
   );
 };
+
