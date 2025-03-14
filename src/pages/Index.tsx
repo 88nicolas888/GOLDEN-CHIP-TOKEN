@@ -2,53 +2,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { useState, useEffect } from 'react';
-
-// Mock data for the chart
-const generateChartData = () => {
-  const data = [];
-  const baseValue = 1000 + Math.random() * 1000;
-  
-  for (let i = 0; i < 30; i++) {
-    const date = new Date();
-    date.setDate(date.getDate() - (30 - i));
-    
-    data.push({
-      date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      value: Math.max(100, baseValue + Math.sin(i / 5) * 400 + Math.random() * 200),
-    });
-  }
-  
-  return data;
-};
-
-const config = {
-  value: {
-    label: "GCT Price",
-    color: "#E0AF68",
-  },
-};
+import { useState } from 'react';
 
 const Index = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [chartData, setChartData] = useState(generateChartData());
-
-  // Simulate live data updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newData = [...chartData];
-      const lastValue = newData[newData.length - 1].value;
-      const change = (Math.random() - 0.5) * 50;
-      
-      newData[newData.length - 1].value = Math.max(100, lastValue + change);
-      setChartData(newData);
-    }, 3000);
-    
-    return () => clearInterval(interval);
-  }, [chartData]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
@@ -66,12 +24,6 @@ const Index = () => {
         
         {/* Blockchain grid background */}
         <div className="absolute inset-0 crypto-grid opacity-20"></div>
-        
-        {/* Floating binary and hexadecimal numbers */}
-        <div className="absolute top-[15%] left-[25%] text-xs text-game-green/30">0x7F3A92B1</div>
-        <div className="absolute top-[40%] right-[30%] text-xs text-game-blue/30">10110101</div>
-        <div className="absolute bottom-[35%] left-[40%] text-xs text-game-yellow/30">0xE94D781C</div>
-        <div className="absolute top-[65%] right-[15%] text-xs text-game-pink/30">11001010</div>
         
         {/* Connected nodes visualization */}
         <svg className="absolute inset-0 w-full h-full z-[-1]">
@@ -168,31 +120,6 @@ const Index = () => {
               </Button>
             </>
           )}
-        </div>
-
-        {/* Price chart section */}
-        <div className="glass rounded-xl p-6 max-w-2xl w-full mb-8">
-          <h2 className="text-2xl font-bold mb-4 text-center text-white">GCT Price Chart</h2>
-          <div className="h-64">
-            <ChartContainer className="h-full" config={config}>
-              <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                <XAxis dataKey="date" stroke="rgba(255,255,255,0.5)" />
-                <YAxis stroke="rgba(255,255,255,0.5)" />
-                <ChartTooltip
-                  content={<ChartTooltipContent />}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#E0AF68"
-                  strokeWidth={2}
-                  dot={{ stroke: "#E0AF68", strokeWidth: 2, fill: "#E0AF68", r: 3 }}
-                  activeDot={{ stroke: "#FFD700", strokeWidth: 2, fill: "#FFD700", r: 6 }}
-                />
-              </LineChart>
-            </ChartContainer>
-          </div>
         </div>
 
         <div className="glass rounded-xl p-6 max-w-lg">
