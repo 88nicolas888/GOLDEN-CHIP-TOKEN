@@ -38,18 +38,29 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
   const shinePositionFront = `${Math.random() * 100}% ${Math.random() * 100}%`;
   const shinePositionBack = `${Math.random() * 100}% ${Math.random() * 100}%`;
 
+  // For special coins, determine a horizontal starting position and movement pattern
+  const specialCoinStyle = coin.isSpecial ? {
+    top: `${Math.random() * 70 + 10}vh`, // Random vertical position between 10-80% of viewport height
+    left: '-100px', // Start from left outside the screen
+    animationName: 'horizontal-fall', // Custom animation for horizontal movement
+    animationDuration: `${coin.duration}s`,
+    animationTimingFunction: 'linear',
+    animationFillMode: 'forwards'
+  } : {};
+
   return (
     <div
-      className={`coin perspective ${isCollected ? 'animate-collect' : 'animate-fall'} ${
+      className={`coin perspective ${isCollected ? 'animate-collect' : coin.isSpecial ? 'special-coin' : 'animate-fall'} ${
         coin.isSpecial ? 'special-coin' : ''
       }`}
       style={{
         '--fall-duration': `${coin.duration}s`,
-        left: `${coin.x}px`,
-        top: '0px', // Ensure the coin starts at the top
+        left: coin.isSpecial ? 'auto' : `${coin.x}px`,
+        top: coin.isSpecial ? 'auto' : '0px', // Non-special coins start at the top
         width: `${coin.size}px`,
         height: `${coin.size}px`,
         pointerEvents: isCollected ? 'none' : 'auto',
+        ...specialCoinStyle
       } as React.CSSProperties}
       onClick={handleClick}
     >
@@ -71,9 +82,19 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
               : `radial-gradient(circle at ${shinePositionFront}, rgba(255,255,255,0.8) 0%, #FF9E64 40%, #E88E54 100%)`
           }}
         >
-          <span className="text-white font-bold text-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">
-            {coin.isSpecial ? '25' : '1'}
-          </span>
+          <div className="text-white font-bold text-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">
+            {coin.isSpecial ? (
+              <div className="flex flex-col items-center justify-center">
+                <span className="text-sm">GCT</span>
+                <span>25</span>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center">
+                <span className="text-xs">GCT</span>
+                <span>1</span>
+              </div>
+            )}
+          </div>
         </div>
         <div
           className={`coin-face coin-back flex items-center justify-center ${

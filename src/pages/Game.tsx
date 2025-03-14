@@ -159,6 +159,12 @@ const Game = () => {
       title: "Game Over!",
       description: `You collected ${score} GCT! Your current balance is ${user?.gct} GCT. You can play again in 5 minutes.`,
     });
+
+    // We're removing the end game screen as requested
+    // Navigate to leaderboard automatically after a short delay
+    setTimeout(() => {
+      navigate('/leaderboard');
+    }, 3000);
   };
 
   // Spawn new coins
@@ -322,30 +328,7 @@ const Game = () => {
         />
       ))}
 
-      {gameStarted && !isPlaying && countdown === 0 && cooldownTime > 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
-          <div className="glass p-8 rounded-2xl max-w-lg">
-            <h1 className="text-4xl font-bold mb-4 text-white">Mining Session Ended!</h1>
-            <p className="text-2xl mb-6 text-white">
-              Session reward: <span className="font-bold text-game-yellow">{score} GCT</span>
-            </p>
-            <p className="text-xl mb-6 text-white">
-              Wallet balance: <span className="font-bold text-game-green">{user?.gct} GCT</span>
-            </p>
-            <div className="mb-6">
-              <p className="text-xl text-white mb-2">Cooldown period:</p>
-              <div className="text-2xl font-bold text-game-yellow mb-2">{formatTime(cooldownTime)}</div>
-              <Progress value={(cooldownTime / (5 * 60)) * 100} className="h-3 w-full bg-gray-700" indicatorClassName="bg-gradient-to-r from-game-orange to-game-yellow" />
-            </div>
-            <Button 
-              onClick={() => navigate('/leaderboard')}
-              className="bg-gradient-to-r from-game-purple to-game-pink text-white px-6 py-3 rounded-full shadow-lg w-full"
-            >
-              View Leaderboard
-            </Button>
-          </div>
-        </div>
-      )}
+      {/* Removed the game over screen as requested */}
     </div>
   );
 };

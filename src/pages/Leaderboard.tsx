@@ -135,10 +135,10 @@ const Leaderboard = () => {
                         <span className="text-xl text-amber-700">🥉</span>
                       )}
                       {index > 2 && (
-                        <span className="font-semibold text-gray-700">#{index + 1}</span>
+                        <span className="font-semibold text-black">#{index + 1}</span>
                       )}
                     </div>
-                    <div className="col-span-6 font-medium">
+                    <div className="col-span-6 font-medium uppercase">
                       {player.username}
                       {player.id === user?.id && (
                         <span className="ml-2 text-xs bg-game-green text-white px-2 py-0.5 rounded-full">You</span>
