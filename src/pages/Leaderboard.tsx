@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -21,7 +22,7 @@ import {
 
 interface LeaderboardUser {
   id: string;
-  username: string;
+  walletAddress: string;
   gct: number;
 }
 
@@ -48,13 +49,13 @@ const Leaderboard = () => {
           return;
         }
         
-        const users: Record<string, { username: string; password: string; gct: number }> = JSON.parse(usersData);
+        const users: Record<string, { walletAddress: string; gct: number }> = JSON.parse(usersData);
         
         // Convert to array and sort by GCT (descending)
         const leaderboardData: LeaderboardUser[] = Object.entries(users)
           .map(([id, userData]) => ({
             id,
-            username: userData.username,
+            walletAddress: userData.walletAddress,
             gct: userData.gct,
           }))
           .sort((a, b) => b.gct - a.gct);
@@ -93,6 +94,12 @@ const Leaderboard = () => {
     setCurrentPage(page);
   };
 
+  // Helper function to format wallet address
+  const formatWalletAddress = (address: string) => {
+    if (!address) return '';
+    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  };
+
   return (
     <div className="min-h-screen bg-game-background p-6 page-transition">
       <div className="max-w-4xl mx-auto">
@@ -129,7 +136,7 @@ const Leaderboard = () => {
           <div className="p-4 bg-gradient-to-r from-game-blue to-game-purple text-white">
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-2 font-bold text-center">Rank</div>
-              <div className="col-span-6 font-bold">Username</div>
+              <div className="col-span-6 font-bold">Wallet</div>
               <div className="col-span-4 font-bold text-right">GCT Balance</div>
             </div>
           </div>
@@ -144,7 +151,7 @@ const Leaderboard = () => {
             <div className="divide-y divide-gray-200">
               {leaderboard.length === 0 ? (
                 <div className="p-10 text-center text-gray-500">
-                  No players on the leaderboard yet. Be the first!
+                  No wallets on the leaderboard yet. Be the first!
                 </div>
               ) : (
                 currentPageData.map((player, index) => {
@@ -170,8 +177,8 @@ const Leaderboard = () => {
                           <span className="font-semibold text-black">#{globalRank}</span>
                         )}
                       </div>
-                      <div className="col-span-6 font-medium uppercase text-black">
-                        {player.username.toUpperCase()}
+                      <div className="col-span-6 font-medium text-black font-mono">
+                        {formatWalletAddress(player.walletAddress)}
                         {player.id === user?.id && (
                           <span className="ml-2 text-xs bg-game-green text-white px-2 py-0.5 rounded-full">You</span>
                         )}

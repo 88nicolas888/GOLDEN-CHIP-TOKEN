@@ -1,11 +1,10 @@
-
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { Wallet, LogOut } from 'lucide-react';
 
 const Index = () => {
-  const { user } = useAuth();
+  const { user, disconnectWallet } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -17,15 +16,12 @@ const Index = () => {
         <div className="absolute bottom-[15%] left-[20%] w-24 h-24 rounded-full bg-game-green opacity-10 animate-float" style={{ animationDelay: '1s' }}></div>
         <div className="absolute bottom-[25%] right-[10%] w-16 h-16 rounded-full bg-game-purple opacity-10 animate-float" style={{ animationDelay: '1.5s' }}></div>
         
-        {/* Cryptocurrency style background elements */}
         <div className="absolute top-[50%] left-[50%] w-96 h-96 rounded-full border border-game-yellow/20 opacity-30"></div>
         <div className="absolute top-[50%] left-[50%] w-72 h-72 rounded-full border border-game-green/20 opacity-30"></div>
         <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-game-blue/20 opacity-30"></div>
         
-        {/* Blockchain grid background */}
         <div className="absolute inset-0 crypto-grid opacity-20"></div>
         
-        {/* Connected nodes visualization */}
         <svg className="absolute inset-0 w-full h-full z-[-1]">
           <line x1="20%" y1="30%" x2="40%" y2="50%" stroke="#7AA2F7" strokeWidth="1" strokeOpacity="0.1" />
           <line x1="40%" y1="50%" x2="60%" y2="70%" stroke="#7AA2F7" strokeWidth="1" strokeOpacity="0.1" />
@@ -38,13 +34,23 @@ const Index = () => {
         </svg>
       </div>
 
-      {/* User balance */}
+      {/* User wallet & balance */}
       {user && (
         <div className="absolute top-4 left-4 z-50">
-          <div className="glass rounded-full px-5 py-2">
-            <span className="font-bold text-white">Your Balance: </span>
-            <span className="ml-2 text-xl font-bold text-game-yellow">{user.gct} GCT</span>
+          <div className="glass rounded-full px-5 py-2 flex items-center space-x-2">
+            <Wallet size={16} className="text-white" />
+            <span className="font-bold text-white">{user.walletAddress.substring(0, 6)}...{user.walletAddress.substring(38)}</span>
+            <span className="text-xl font-bold text-game-yellow ml-2">{user.gct} GCT</span>
           </div>
+          
+          <Button 
+            onClick={disconnectWallet} 
+            variant="outline" 
+            size="sm" 
+            className="mt-2 text-white bg-black/30 hover:bg-black/50 rounded-full"
+          >
+            <LogOut size={14} className="mr-1" /> Disconnect
+          </Button>
         </div>
       )}
 
@@ -55,7 +61,6 @@ const Index = () => {
               background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, #E0AF68 25%, #D4A456 100%)",
               boxShadow: "0 0 20px rgba(224, 175, 104, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.8)"
             }}>
-              {/* Coin front face */}
               <div className="absolute inset-0 rounded-full flex items-center justify-center preserve-3d backface-hidden" 
                 style={{ transform: "translateZ(2px)" }}>
                 <div className="text-white font-bold flex flex-col items-center justify-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">
@@ -63,7 +68,6 @@ const Index = () => {
                 </div>
               </div>
               
-              {/* Coin back face */}
               <div className="absolute inset-0 rounded-full flex items-center justify-center preserve-3d backface-hidden" 
                 style={{ 
                   transform: "rotateY(180deg) translateZ(2px)",
@@ -74,7 +78,6 @@ const Index = () => {
                 </div>
               </div>
               
-              {/* Coin edge */}
               <div className="absolute inset-0 rounded-full" style={{
                 transform: "translateZ(0px)",
                 background: "linear-gradient(to right, #D4A456, #FFD700, #D4A456)",
@@ -109,20 +112,12 @@ const Index = () => {
               </Button>
             </>
           ) : (
-            <>
-              <Button 
-                onClick={() => navigate('/login')} 
-                className="btn-hover bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg"
-              >
-                Login
-              </Button>
-              <Button 
-                onClick={() => navigate('/signup')} 
-                className="btn-hover bg-gradient-to-r from-game-purple to-game-pink text-white text-lg px-8 py-6 rounded-full shadow-lg"
-              >
-                Sign Up
-              </Button>
-            </>
+            <Button 
+              onClick={() => navigate('/connect-wallet')} 
+              className="btn-hover bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg flex items-center"
+            >
+              <Wallet size={24} className="mr-2" /> Connect Wallet
+            </Button>
           )}
         </div>
 
@@ -144,4 +139,3 @@ const Index = () => {
 };
 
 export default Index;
-

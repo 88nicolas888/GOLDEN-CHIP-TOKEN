@@ -4,16 +4,15 @@ import { toast } from '@/components/ui/use-toast';
 
 interface User {
   id: string;
-  username: string;
+  walletAddress: string;
   gct: number;
 }
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (username: string, password: string) => Promise<boolean>;
-  signup: (username: string, password: string) => Promise<boolean>;
-  logout: () => void;
+  connectWallet: (walletAddress: string) => Promise<boolean>;
+  disconnectWallet: () => void;
   updateGCT: (amount: number) => void;
 }
 
@@ -47,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // For demo purposes, we're storing users in localStorage
   // In a real app, this would be a database
-  const getUsers = (): Record<string, { username: string; password: string; gct: number }> => {
+  const getUsers = (): Record<string, { walletAddress: string; gct: number }> => {
     const users = localStorage.getItem('users');
     return users ? JSON.parse(users) : {};
   };
@@ -56,78 +55,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('users', JSON.stringify(users));
   };
 
-  const login = async (username: string, password: string): Promise<boolean> => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const users = getUsers();
-    const userRecord = Object.entries(users).find(
-      ([id, user]) => user.username === username && user.password === password
-    );
-    
-    if (userRecord) {
-      const [id, userData] = userRecord;
-      const loggedInUser = {
-        id,
-        username: userData.username,
-        gct: userData.gct
-      };
-      setUser(loggedInUser);
-      localStorage.setItem('user', JSON.stringify(loggedInUser));
+  const connectWallet = async (walletAddress: string): Promise<boolean> => {
+    // Validate wallet address format (basic validation)
+    if (!walletAddress.startsWith('0x') || walletAddress.length !== 42) {
       toast({
-        title: "Login successful",
-        description: `Welcome back, ${username}!`,
-      });
-      return true;
-    }
-    
-    toast({
-      title: "Login failed",
-      description: "Invalid username or password",
-      variant: "destructive"
-    });
-    return false;
-  };
-
-  const signup = async (username: string, password: string): Promise<boolean> => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const users = getUsers();
-    
-    // Check if username already exists
-    if (Object.values(users).some(user => user.username === username)) {
-      toast({
-        title: "Signup failed",
-        description: "Username already exists",
+        title: "Invalid wallet address",
+        description: "Please enter a valid cryptocurrency wallet address",
         variant: "destructive"
       });
       return false;
     }
     
-    // Create new user
-    const id = Date.now().toString();
-    users[id] = { username, password, gct: 0 };
-    saveUsers(users);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Log in the new user
-    const newUser = { id, username, gct: 0 };
-    setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
+    const users = getUsers();
+    
+    // Check if wallet already exists in our records
+    let userId = '';
+    let userGct = 0;
+    
+    const existingUser = Object.entries(users).find(
+      ([id, user]) => user.walletAddress.toLowerCase() === walletAddress.toLowerCase()
+    );
+    
+    if (existingUser) {
+      // If wallet exists, use existing record
+      [userId, { gct: userGct }] = existingUser;
+    } else {
+      // Create new user record for this wallet
+      userId = Date.now().toString();
+      userGct = 0;
+      users[userId] = { walletAddress, gct: userGct };
+      saveUsers(users);
+    }
+    
+    // Connect the wallet
+    const loggedInUser = {
+      id: userId,
+      walletAddress,
+      gct: userGct
+    };
+    
+    setUser(loggedInUser);
+    localStorage.setItem('user', JSON.stringify(loggedInUser));
     
     toast({
-      title: "Signup successful",
-      description: "Your account has been created!",
+      title: "Wallet connected",
+      description: `Connected to ${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}`,
     });
     return true;
   };
 
-  const logout = () => {
+  const disconnectWallet = () => {
     setUser(null);
     localStorage.removeItem('user');
     toast({
-      title: "Logged out",
-      description: "You have been logged out successfully",
+      title: "Wallet disconnected",
+      description: "Your wallet has been disconnected",
     });
   };
 
@@ -150,7 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, updateGCT }}>
+    <AuthContext.Provider value={{ user, loading, connectWallet, disconnectWallet, updateGCT }}>
       {children}
     </AuthContext.Provider>
   );

@@ -9,8 +9,7 @@ import Index from "./pages/Index";
 import Game from "./pages/Game";
 import Leaderboard from "./pages/Leaderboard";
 import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import ConnectWallet from "./pages/ConnectWallet";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -33,24 +32,14 @@ const AnimatedRoutes = () => {
             <Index />
           </motion.div>
         } />
-        <Route path="/login" element={
+        <Route path="/connect-wallet" element={
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Login />
-          </motion.div>
-        } />
-        <Route path="/signup" element={
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Signup />
+            <ConnectWallet />
           </motion.div>
         } />
         <Route 

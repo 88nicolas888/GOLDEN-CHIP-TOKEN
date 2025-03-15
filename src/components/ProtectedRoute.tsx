@@ -16,11 +16,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   useEffect(() => {
     if (!loading && !user) {
       toast({
-        title: "Authentication required",
-        description: "Please log in to access this page",
+        title: "Wallet connection required",
+        description: "Please connect your wallet to access this page",
         variant: "destructive",
       });
-      navigate('/login');
+      navigate('/connect-wallet');
     }
   }, [user, loading, navigate, toast]);
 
