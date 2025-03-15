@@ -3,6 +3,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface LeaderboardUser {
   id: string;
@@ -139,12 +147,12 @@ const Leaderboard = () => {
                       )}
                     </div>
                     <div className="col-span-6 font-medium uppercase text-black">
-                      {player.username}
+                      {player.username.toUpperCase()}
                       {player.id === user?.id && (
                         <span className="ml-2 text-xs bg-game-green text-white px-2 py-0.5 rounded-full">You</span>
                       )}
                     </div>
-                    <div className="col-span-4 text-right font-bold">
+                    <div className="col-span-4 text-right font-bold text-black">
                       {player.gct.toLocaleString()} GCT
                     </div>
                   </div>
