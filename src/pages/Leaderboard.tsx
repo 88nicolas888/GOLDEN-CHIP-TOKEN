@@ -1,8 +1,15 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -24,6 +31,9 @@ const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const [userRank, setUserRank] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const maxPlayersShown = 100;
 
   useEffect(() => {
     // Function to get leaderboard data
@@ -49,7 +59,9 @@ const Leaderboard = () => {
           }))
           .sort((a, b) => b.gct - a.gct);
         
-        setLeaderboard(leaderboardData);
+        // Only keep top 100 players
+        const top100Players = leaderboardData.slice(0, maxPlayersShown);
+        setLeaderboard(top100Players);
         
         // Find current user's rank
         if (user) {
@@ -71,11 +83,21 @@ const Leaderboard = () => {
     return () => clearInterval(intervalId);
   }, [user]);
 
+  // Calculate pagination values
+  const totalPages = Math.ceil(Math.min(leaderboard.length, maxPlayersShown) / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, leaderboard.length);
+  const currentPageData = leaderboard.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="min-h-screen bg-game-background p-6 page-transition">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Leaderboard</h1>
+          <h1 className="text-3xl font-bold">Leaderboard <span className="text-lg font-normal">(Top 100)</span></h1>
           <div className="flex space-x-3">
             <Button 
               onClick={() => navigate('/game')} 
@@ -125,39 +147,76 @@ const Leaderboard = () => {
                   No players on the leaderboard yet. Be the first!
                 </div>
               ) : (
-                leaderboard.slice(0, 100).map((player, index) => (
-                  <div 
-                    key={player.id} 
-                    className={`grid grid-cols-12 gap-4 p-4 hover:bg-gray-50 transition-colors ${
-                      player.id === user?.id ? 'bg-game-background/30' : ''
-                    }`}
-                  >
-                    <div className="col-span-2 text-center">
-                      {index === 0 && (
-                        <span className="text-xl text-yellow-500">🏆</span>
-                      )}
-                      {index === 1 && (
-                        <span className="text-xl text-gray-400">🥈</span>
-                      )}
-                      {index === 2 && (
-                        <span className="text-xl text-amber-700">🥉</span>
-                      )}
-                      {index > 2 && (
-                        <span className="font-semibold text-black">#{index + 1}</span>
-                      )}
+                currentPageData.map((player, index) => {
+                  const globalRank = startIndex + index + 1;
+                  return (
+                    <div 
+                      key={player.id} 
+                      className={`grid grid-cols-12 gap-4 p-4 hover:bg-gray-50 transition-colors ${
+                        player.id === user?.id ? 'bg-game-background/30' : ''
+                      }`}
+                    >
+                      <div className="col-span-2 text-center">
+                        {globalRank === 1 && (
+                          <span className="text-xl text-yellow-500">🏆</span>
+                        )}
+                        {globalRank === 2 && (
+                          <span className="text-xl text-gray-400">🥈</span>
+                        )}
+                        {globalRank === 3 && (
+                          <span className="text-xl text-amber-700">🥉</span>
+                        )}
+                        {globalRank > 3 && (
+                          <span className="font-semibold text-black">#{globalRank}</span>
+                        )}
+                      </div>
+                      <div className="col-span-6 font-medium uppercase text-black">
+                        {player.username.toUpperCase()}
+                        {player.id === user?.id && (
+                          <span className="ml-2 text-xs bg-game-green text-white px-2 py-0.5 rounded-full">You</span>
+                        )}
+                      </div>
+                      <div className="col-span-4 text-right font-bold text-black">
+                        {player.gct.toLocaleString()} GCT
+                      </div>
                     </div>
-                    <div className="col-span-6 font-medium uppercase text-black">
-                      {player.username.toUpperCase()}
-                      {player.id === user?.id && (
-                        <span className="ml-2 text-xs bg-game-green text-white px-2 py-0.5 rounded-full">You</span>
-                      )}
-                    </div>
-                    <div className="col-span-4 text-right font-bold text-black">
-                      {player.gct.toLocaleString()} GCT
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               )}
+            </div>
+          )}
+          
+          {/* Pagination controls */}
+          {!isLoading && leaderboard.length > 0 && totalPages > 1 && (
+            <div className="p-4 border-t border-gray-200">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                  
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        isActive={currentPage === i + 1}
+                        onClick={() => handlePageChange(i + 1)}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           )}
         </div>
