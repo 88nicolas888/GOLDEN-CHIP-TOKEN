@@ -69,8 +69,8 @@ const ConnectWallet = () => {
         </form>
         
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm text-muted-foreground hover:underline mt-4 inline-block">
-            Back to Home
+          <Link to="/home" className="text-sm text-muted-foreground hover:underline mt-4 inline-block">
+            Learn More About GCT
           </Link>
         </div>
 

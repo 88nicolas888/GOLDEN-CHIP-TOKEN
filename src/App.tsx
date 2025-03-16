@@ -29,17 +29,17 @@ const AnimatedRoutes = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Index />
+            <ConnectWallet />
           </motion.div>
         } />
-        <Route path="/connect-wallet" element={
+        <Route path="/home" element={
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <ConnectWallet />
+            <Index />
           </motion.div>
         } />
         <Route 
