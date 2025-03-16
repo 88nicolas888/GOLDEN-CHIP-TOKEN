@@ -17,9 +17,9 @@ const Index = () => {
         <div className="absolute bottom-[15%] left-[20%] w-24 h-24 rounded-full bg-game-green opacity-10 animate-float" style={{ animationDelay: '1s' }}></div>
         <div className="absolute bottom-[25%] right-[10%] w-16 h-16 rounded-full bg-game-purple opacity-10 animate-float" style={{ animationDelay: '1.5s' }}></div>
         
-        <div className="absolute top-[50%] left-[50%] w-96 h-96 rounded-full border border-game-yellow/20 opacity-30"></div>
-        <div className="absolute top-[50%] left-[50%] w-72 h-72 rounded-full border border-game-green/20 opacity-30"></div>
-        <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-game-blue/20 opacity-30"></div>
+        <div className="absolute top-[50%] left-[50%] w-96 h-96 rounded-full border border-game-yellow/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
+        <div className="absolute top-[50%] left-[50%] w-72 h-72 rounded-full border border-game-green/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
+        <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-game-blue/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
         
         <div className="absolute inset-0 crypto-grid opacity-20"></div>
         
@@ -93,7 +93,7 @@ const Index = () => {
         </h1>
         
         <p className="text-xl mb-10 text-center max-w-lg text-white">
-          Mine GCT tokens by catching them as they drop. Build your crypto balance and climb the leaderboard!
+          Mine GCT tokens automatically for 24 hours. Collect 1 GCT every 5 seconds and build your crypto balance!
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -125,12 +125,11 @@ const Index = () => {
         <div className="glass rounded-xl p-6 max-w-lg">
           <h2 className="text-2xl font-bold mb-4 text-center text-white">How To Mine GCT</h2>
           <ul className="list-disc pl-6 space-y-2 text-white">
-            <li>GCT tokens will fall randomly from the top of the screen</li>
-            <li>Click on tokens to mine them before they disappear</li>
-            <li>Regular tokens are worth 1 GCT</li>
-            <li>Rare golden tokens (1% chance) are worth 25 GCT!</li>
-            <li>Each mining session lasts 60 seconds</li>
-            <li>5-minute cooldown between mining sessions</li>
+            <li>Click "Start Mining" to begin automatic mining</li>
+            <li>Mining generates 1 GCT every 5 seconds</li>
+            <li>Mining runs for 24 hours once activated</li>
+            <li>You can only start mining once per day</li>
+            <li>When mining ends, come back tomorrow to restart</li>
             <li>Compete with other miners to reach the top of the leaderboard</li>
           </ul>
         </div>
