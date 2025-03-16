@@ -3,10 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Wallet, LogOut } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 const Index = () => {
   const { user, disconnectWallet } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  // Add loading state to ensure content renders properly
+  useEffect(() => {
+    // Small timeout to ensure styles are applied
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="animate-pulse-scale">
+          <div className="w-20 h-20 rounded-full bg-game-yellow opacity-75"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
@@ -20,19 +43,6 @@ const Index = () => {
         <div className="absolute top-[50%] left-[50%] w-96 h-96 rounded-full border border-game-yellow/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
         <div className="absolute top-[50%] left-[50%] w-72 h-72 rounded-full border border-game-green/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
         <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-game-blue/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
-        
-        <div className="absolute inset-0 crypto-grid opacity-20"></div>
-        
-        <svg className="absolute inset-0 w-full h-full z-[-1]">
-          <line x1="20%" y1="30%" x2="40%" y2="50%" stroke="#7AA2F7" strokeWidth="1" strokeOpacity="0.1" />
-          <line x1="40%" y1="50%" x2="60%" y2="70%" stroke="#7AA2F7" strokeWidth="1" strokeOpacity="0.1" />
-          <line x1="60%" y1="70%" x2="80%" y2="30%" stroke="#7AA2F7" strokeWidth="1" strokeOpacity="0.1" />
-          <line x1="80%" y1="30%" x2="20%" y2="30%" stroke="#7AA2F7" strokeWidth="1" strokeOpacity="0.1" />
-          <circle cx="20%" cy="30%" r="4" fill="#7AA2F7" fillOpacity="0.2" />
-          <circle cx="40%" cy="50%" r="4" fill="#7AA2F7" fillOpacity="0.2" />
-          <circle cx="60%" cy="70%" r="4" fill="#7AA2F7" fillOpacity="0.2" />
-          <circle cx="80%" cy="30%" r="4" fill="#7AA2F7" fillOpacity="0.2" />
-        </svg>
       </div>
 
       {/* User wallet & balance */}
@@ -55,40 +65,19 @@ const Index = () => {
         </div>
       )}
 
-      <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12 page-transition">
-        <div className="perspective-500 mb-12">
-          <div className="preserve-3d animate-spin-slow">
-            <div className="relative w-32 h-32 rounded-full" style={{
-              background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, #E0AF68 25%, #D4A456 100%)",
-              boxShadow: "0 0 20px rgba(224, 175, 104, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.8)"
-            }}>
-              <div className="absolute inset-0 rounded-full flex items-center justify-center preserve-3d backface-hidden" 
-                style={{ transform: "translateZ(2px)" }}>
-                <div className="text-white font-bold flex flex-col items-center justify-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">
-                  <span className="text-2xl">GCT</span>
-                </div>
-              </div>
-              
-              <div className="absolute inset-0 rounded-full flex items-center justify-center preserve-3d backface-hidden" 
-                style={{ 
-                  transform: "rotateY(180deg) translateZ(2px)",
-                  background: "radial-gradient(circle at 70% 30%, rgba(255,255,255,0.9) 0%, #E0AF68 25%, #D4A456 100%)"
-                }}>
-                <div className="text-white font-bold flex flex-col items-center justify-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">
-                  <span className="text-2xl">GCT</span>
-                </div>
-              </div>
-              
-              <div className="absolute inset-0 rounded-full" style={{
-                transform: "translateZ(0px)",
-                background: "linear-gradient(to right, #D4A456, #FFD700, #D4A456)",
-                border: "1px solid #FFD700"
-              }}></div>
+      <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12">
+        <div className="mb-12">
+          <div className="relative w-32 h-32 rounded-full mx-auto animate-spin-slow" style={{
+            background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, #E0AF68 25%, #D4A456 100%)",
+            boxShadow: "0 0 20px rgba(224, 175, 104, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.8)"
+          }}>
+            <div className="absolute inset-0 rounded-full flex items-center justify-center">
+              <div className="text-white font-bold text-2xl">GCT</div>
             </div>
           </div>
         </div>
 
-        <h1 className="text-5xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-game-blue to-game-green">
+        <h1 className="text-5xl font-bold mb-4 text-center text-white">
           GCT AIRDROP
         </h1>
         
@@ -101,13 +90,13 @@ const Index = () => {
             <>
               <Button 
                 onClick={() => navigate('/game')} 
-                className="btn-hover bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg"
+                className="bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
               >
                 Start Mining
               </Button>
               <Button 
                 onClick={() => navigate('/leaderboard')} 
-                className="btn-hover bg-gradient-to-r from-game-purple to-game-pink text-white text-lg px-8 py-6 rounded-full shadow-lg"
+                className="bg-gradient-to-r from-game-purple to-game-pink text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
               >
                 Leaderboard
               </Button>
@@ -115,14 +104,14 @@ const Index = () => {
           ) : (
             <Button 
               onClick={() => navigate('/connect-wallet')} 
-              className="btn-hover bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg flex items-center"
+              className="bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90 flex items-center"
             >
               <Wallet size={24} className="mr-2" /> Connect Wallet
             </Button>
           )}
         </div>
 
-        <div className="glass rounded-xl p-6 max-w-lg">
+        <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 max-w-lg">
           <h2 className="text-2xl font-bold mb-4 text-center text-white">How To Mine GCT</h2>
           <ul className="list-disc pl-6 space-y-2 text-white">
             <li>Click "Start Mining" to begin automatic mining</li>
