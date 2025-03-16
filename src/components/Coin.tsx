@@ -75,7 +75,7 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
             coin.isSpecial ? 'bg-game-yellow' : 'bg-game-orange'
           }`}
           style={{ 
-            transform: `rotateY(0deg) rotate(${rotation}deg)`,
+            transform: `rotateY(0deg) rotate(${rotation}deg) translateZ(2px)`,
             boxShadow: coin.isSpecial 
               ? '0 0 10px rgba(224, 175, 104, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.8)' 
               : '0 0 5px rgba(255, 158, 100, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.5)',
@@ -104,7 +104,7 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
             coin.isSpecial ? 'bg-game-yellow' : 'bg-game-orange'
           }`}
           style={{ 
-            transform: `rotateY(180deg) rotate(${rotation}deg)`,
+            transform: `rotateY(180deg) rotate(${rotation}deg) translateZ(2px)`,
             boxShadow: coin.isSpecial 
               ? '0 0 10px rgba(224, 175, 104, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.8)' 
               : '0 0 5px rgba(255, 158, 100, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.5)',
@@ -117,16 +117,34 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
           <span className="text-white font-bold text-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">GCT</span>
         </div>
         
-        {/* Edge of the coin for 3D effect */}
-        <div className="absolute inset-0 rounded-full z-[-1]" style={{
+        {/* Improved edge of the coin for 3D effect */}
+        <div className="absolute inset-0 rounded-full z-[-1] preserve-3d" style={{
           transform: 'translateZ(-2px)',
           background: coin.isSpecial 
             ? 'linear-gradient(to right, #D4A456, #FFD700, #D4A456)' 
             : 'linear-gradient(to right, #E88E54, #FF9E64, #E88E54)',
           border: coin.isSpecial ? '1px solid #FFD700' : '1px solid #FFA07A',
         }}></div>
+        
+        {/* Additional edge for enhanced 3D effect */}
+        <div className="absolute inset-0 rounded-full preserve-3d" style={{
+          transform: 'rotateX(90deg)',
+          height: '4px',
+          top: 'calc(50% - 2px)',
+          background: coin.isSpecial 
+            ? 'linear-gradient(to right, #D4A456, #FFD700, #D4A456)' 
+            : 'linear-gradient(to right, #E88E54, #FF9E64, #E88E54)',
+        }}></div>
+        
+        <div className="absolute inset-0 rounded-full preserve-3d" style={{
+          transform: 'rotateY(90deg)',
+          width: '4px',
+          left: 'calc(50% - 2px)',
+          background: coin.isSpecial 
+            ? 'linear-gradient(to bottom, #D4A456, #FFD700, #D4A456)' 
+            : 'linear-gradient(to bottom, #E88E54, #FF9E64, #E88E54)',
+        }}></div>
       </div>
     </div>
   );
 };
-

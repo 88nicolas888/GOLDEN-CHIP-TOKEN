@@ -77,14 +77,66 @@ const Index = () => {
       )}
 
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12">
-        <div className="mb-12">
-          <div className="relative w-32 h-32 rounded-full mx-auto animate-spin-slow" style={{
-            background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, #E0AF68 25%, #D4A456 100%)",
-            boxShadow: "0 0 20px rgba(224, 175, 104, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.8)"
-          }}>
-            <div className="absolute inset-0 rounded-full flex items-center justify-center">
-              <div className="text-white font-bold text-2xl">GCT</div>
+        <div className="mb-12 perspective">
+          {/* Enhanced 3D Coin */}
+          <div className="relative w-40 h-40 mx-auto preserve-3d animate-spin-slow">
+            {/* Coin front face */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-600 backface-hidden"
+              style={{
+                transform: 'translateZ(5px)',
+                boxShadow: 'inset 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 200, 0, 0.5)'
+              }}>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-white font-bold text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">GCT</div>
+              </div>
             </div>
+            
+            {/* Coin back face */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-400 to-amber-700 backface-hidden"
+              style={{
+                transform: 'rotateY(180deg) translateZ(5px)',
+                boxShadow: 'inset 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 200, 0, 0.5)'
+              }}>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-white font-bold text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">GCT</div>
+              </div>
+            </div>
+            
+            {/* Coin edge */}
+            <div className="absolute inset-0 rounded-full"
+              style={{
+                transform: 'rotateY(90deg)',
+                background: 'linear-gradient(to bottom, #FFD700, #B8860B)',
+                width: '10px',
+                left: 'calc(50% - 5px)',
+                boxShadow: '0 0 5px rgba(255, 215, 0, 0.8)'
+              }}></div>
+              
+            {/* More coin edges for realistic 3D effect */}
+            <div className="absolute inset-0 rounded-full"
+              style={{
+                transform: 'rotateX(90deg)',
+                background: 'linear-gradient(to right, #FFD700, #B8860B, #FFD700)',
+                height: '10px',
+                top: 'calc(50% - 5px)',
+                boxShadow: '0 0 5px rgba(255, 215, 0, 0.8)'
+              }}></div>
+              
+            {/* Shine effect */}
+            <div className="absolute inset-0 rounded-full overflow-hidden backface-hidden"
+              style={{
+                transform: 'translateZ(6px)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%)',
+                opacity: 0.6
+              }}></div>
+              
+            {/* Shine effect on back */}
+            <div className="absolute inset-0 rounded-full overflow-hidden backface-hidden"
+              style={{
+                transform: 'rotateY(180deg) translateZ(6px)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%)',
+                opacity: 0.6
+              }}></div>
           </div>
         </div>
 
