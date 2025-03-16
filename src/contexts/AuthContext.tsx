@@ -14,6 +14,7 @@ interface AuthContextType {
   connectWallet: (walletAddress: string) => Promise<boolean>;
   disconnectWallet: () => void;
   updateGCT: (amount: number) => void;
+  checkAndUpdateMiningRewards: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -43,6 +44,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     setLoading(false);
   }, []);
+
+  // Run mining rewards check whenever the app is loaded
+  useEffect(() => {
+    if (user) {
+      checkAndUpdateMiningRewards();
+      
+      // Set interval to check mining rewards every minute
+      const interval = setInterval(checkAndUpdateMiningRewards, 60000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
 
   // For demo purposes, we're storing users in localStorage
   // In a real app, this would be a database
@@ -100,6 +112,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(loggedInUser);
     localStorage.setItem('user', JSON.stringify(loggedInUser));
     
+    // Check mining rewards right after connecting
+    setTimeout(checkAndUpdateMiningRewards, 500);
+    
     toast({
       title: "Wallet connected",
       description: `Connected to ${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}`,
@@ -134,8 +149,63 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Function to check if mining is active and calculate rewards
+  const checkAndUpdateMiningRewards = () => {
+    if (!user) return;
+    
+    const miningEndTime = localStorage.getItem('miningEndTime');
+    const lastRewardCalculation = localStorage.getItem('lastRewardCalculation');
+    
+    if (!miningEndTime) return;
+    
+    const now = Date.now();
+    const endTime = parseInt(miningEndTime, 10);
+    
+    // If mining has ended, stop calculating rewards
+    if (endTime < now) {
+      localStorage.removeItem('miningEndTime');
+      localStorage.removeItem('lastRewardCalculation');
+      localStorage.removeItem('lastRewardTime');
+      return;
+    }
+    
+    // Calculate rewards since last calculation
+    const lastCalcTime = lastRewardCalculation ? parseInt(lastRewardCalculation, 10) : 0;
+    
+    if (lastCalcTime === 0) {
+      // First calculation, just set the timestamp and return
+      localStorage.setItem('lastRewardCalculation', now.toString());
+      return;
+    }
+    
+    // Calculate seconds passed since last calculation (max 1 hour to prevent abuse)
+    const secondsPassed = Math.min(Math.floor((now - lastCalcTime) / 1000), 3600);
+    
+    if (secondsPassed <= 0) return;
+    
+    // Calculate rewards (1 GCT every 5 seconds)
+    const rewardsEarned = Math.floor(secondsPassed / 5);
+    
+    if (rewardsEarned > 0) {
+      // Update balance
+      updateGCT(rewardsEarned);
+      
+      // Update last calculation time
+      localStorage.setItem('lastRewardCalculation', now.toString());
+      
+      console.log(`Added ${rewardsEarned} GCT from offline mining. ${secondsPassed} seconds passed.`);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, connectWallet, disconnectWallet, updateGCT }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      connectWallet, 
+      disconnectWallet, 
+      updateGCT,
+      checkAndUpdateMiningRewards 
+    }}>
       {children}
     </AuthContext.Provider>
   );

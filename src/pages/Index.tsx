@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const Index = () => {
-  const { user, disconnectWallet } = useAuth();
+  const { user, disconnectWallet, checkAndUpdateMiningRewards } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
@@ -20,6 +20,17 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Check for mining rewards when page loads
+  useEffect(() => {
+    if (user) {
+      checkAndUpdateMiningRewards();
+      
+      // Set up interval to check mining rewards periodically
+      const interval = setInterval(checkAndUpdateMiningRewards, 30000); // Check every 30 seconds
+      return () => clearInterval(interval);
+    }
+  }, [user, checkAndUpdateMiningRewards]);
 
   if (loading) {
     return (
@@ -118,6 +129,7 @@ const Index = () => {
             <li>Mining generates 1 GCT every 5 seconds</li>
             <li>Mining runs for 24 hours once activated</li>
             <li>You can only start mining once per day</li>
+            <li>Mining continues even when you're offline!</li>
             <li>When mining ends, come back tomorrow to restart</li>
             <li>Compete with other miners to reach the top of the leaderboard</li>
           </ul>

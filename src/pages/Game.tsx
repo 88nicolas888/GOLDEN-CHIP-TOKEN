@@ -9,12 +9,11 @@ import { formatTime } from '@/lib/utils';
 import { Sparkles, Clock, Trophy, BarChart4 } from 'lucide-react';
 
 const Game = () => {
-  const { user, updateGCT } = useAuth();
+  const { user, updateGCT, checkAndUpdateMiningRewards } = useAuth();
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
   const [nextRewardTime, setNextRewardTime] = useState(0);
-  const miningIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const rewardTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -60,7 +59,10 @@ const Game = () => {
         variant: "destructive",
       });
     }
-  }, []);
+    
+    // Perform initial check for offline mining rewards
+    checkAndUpdateMiningRewards();
+  }, [checkAndUpdateMiningRewards]);
 
   // Start mining function
   const startMining = () => {
@@ -81,9 +83,10 @@ const Game = () => {
     const miningDuration = 24 * 60 * 60; 
     const endTime = Date.now() + (miningDuration * 1000);
     
-    // Save to localStorage
+    // Save to localStorage for background mining
     localStorage.setItem('miningEndTime', endTime.toString());
     localStorage.setItem('lastMiningDay', today);
+    localStorage.setItem('lastRewardCalculation', Date.now().toString());
     
     // Initialize first reward
     giveReward();
@@ -95,22 +98,23 @@ const Game = () => {
     
     toast({
       title: "Mining Started",
-      description: "You are now mining GCT! You'll receive 1 GCT every 5 seconds for the next 24 hours.",
+      description: "You are now mining GCT! You'll receive 1 GCT every 5 seconds for the next 24 hours, even when offline.",
     });
   };
 
-  // Give GCT reward function
+  // Give GCT reward function - used only when actively on the page
   const giveReward = () => {
     if (!user) return;
     
-    // Give 1 GCT
-    updateGCT(1);
-    
-    // Save last reward time
+    // Record last reward time
     localStorage.setItem('lastRewardTime', Date.now().toString());
+    
+    // Give 1 GCT (but don't call updateGCT directly to avoid double counting)
+    // Instead, call the background mining reward calculation which will add the correct amount
+    checkAndUpdateMiningRewards();
   };
 
-  // Reward timer effect
+  // Reward timer effect - visual only when on the page
   useEffect(() => {
     if (!isActive) return;
     
@@ -133,7 +137,7 @@ const Game = () => {
     };
   }, [isActive, user]);
 
-  // Mining timer effect
+  // Mining timer effect - for UI display only
   useEffect(() => {
     if (!isActive) return;
     
@@ -149,6 +153,7 @@ const Game = () => {
           clearInterval(rewardTimerRef.current!);
           localStorage.removeItem('miningEndTime');
           localStorage.removeItem('lastRewardTime');
+          localStorage.removeItem('lastRewardCalculation');
           
           setIsActive(false);
           
@@ -180,7 +185,6 @@ const Game = () => {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (miningIntervalRef.current) clearInterval(miningIntervalRef.current);
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
       if (rewardTimerRef.current) clearInterval(rewardTimerRef.current);
     };
@@ -268,7 +272,7 @@ const Game = () => {
               
               <div className="text-center text-white">
                 <p className="mb-4">Your mining operation is active and will continue for the time shown above.</p>
-                <p className="font-bold">You will receive 1 GCT every 5 seconds.</p>
+                <p className="font-bold">You will receive 1 GCT every 5 seconds, even when offline.</p>
               </div>
             </>
           ) : (
@@ -295,7 +299,7 @@ const Game = () => {
               
               <div className="mt-6 text-center text-white text-sm opacity-80">
                 <p>You can only start mining once per day</p>
-                <p>Mining will continue even if you close this page</p>
+                <p>Mining will continue even when you're offline!</p>
               </div>
             </>
           )}
