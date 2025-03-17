@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Wallet, LogOut } from 'lucide-react';
+import { Wallet, LogOut, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -163,14 +163,30 @@ const Index = () => {
               >
                 Leaderboard
               </Button>
+              <Button 
+                onClick={() => navigate('/home')} 
+                className="bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
+              >
+                <Info size={20} className="mr-2" />
+                Learn More About GCT
+              </Button>
             </>
           ) : (
-            <Button 
-              onClick={() => navigate('/connect-wallet')} 
-              className="bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90 flex items-center"
-            >
-              <Wallet size={24} className="mr-2" /> Connect Wallet
-            </Button>
+            <>
+              <Button 
+                onClick={() => navigate('/connect')} 
+                className="bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90 flex items-center"
+              >
+                <Wallet size={24} className="mr-2" /> Connect Wallet
+              </Button>
+              <Button 
+                onClick={() => navigate('/home')} 
+                className="bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
+              >
+                <Info size={20} className="mr-2" />
+                Learn More About GCT
+              </Button>
+            </>
           )}
         </div>
 

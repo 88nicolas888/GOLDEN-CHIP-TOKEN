@@ -49,7 +49,7 @@ const AnimatedRoutes = () => {
           </motion.div>
         } />
         
-        {/* About GCT page */}
+        {/* About GCT page - accessible to everyone */}
         <Route path="/home" element={
           <motion.div
             initial={{ opacity: 0, y: 20 }}
