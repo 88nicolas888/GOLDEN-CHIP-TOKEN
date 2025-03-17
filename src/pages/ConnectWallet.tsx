@@ -10,8 +10,14 @@ import { Wallet } from 'lucide-react';
 const ConnectWallet = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { connectWallet } = useAuth();
+  const { connectWallet, user } = useAuth();
   const navigate = useNavigate();
+
+  // If user is already logged in, redirect to game page
+  if (user) {
+    navigate('/game');
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,11 +78,6 @@ const ConnectWallet = () => {
           <Link to="/home" className="text-sm text-muted-foreground hover:underline mt-4 inline-block">
             Learn More About GCT
           </Link>
-        </div>
-
-        <div className="mt-8 text-sm text-muted-foreground bg-black/10 p-4 rounded-lg">
-          <p className="font-medium mb-2">Note:</p>
-          <p>This is a demo application. In a real crypto application, you would connect using MetaMask or another wallet provider. No actual cryptocurrency will be transferred.</p>
         </div>
       </div>
     </div>

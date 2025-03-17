@@ -20,7 +20,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         description: "Please connect your wallet to access this page",
         variant: "destructive",
       });
-      navigate('/connect-wallet');
+      navigate('/connect');
     }
   }, [user, loading, navigate, toast]);
 
