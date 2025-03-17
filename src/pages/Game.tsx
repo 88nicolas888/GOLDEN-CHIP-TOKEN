@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { formatTime } from '@/lib/utils';
-import { Sparkles, Clock, Trophy, BarChart4 } from 'lucide-react';
+import { Sparkles, Clock, Trophy, BarChart4, Info, Home } from 'lucide-react';
 
 const Game = () => {
   const { user, updateGCT, checkAndUpdateMiningRewards } = useAuth();
@@ -51,7 +51,7 @@ const Game = () => {
       }
     }
     
-    // Check if already mined today
+    // Check if already mined today but not currently active
     if (lastMiningDay === today && !isActive) {
       toast({
         title: "Mining limit reached",
@@ -74,6 +74,16 @@ const Game = () => {
       toast({
         title: "Mining limit reached",
         description: "You can only start mining once per day. Please come back tomorrow.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Check if mining is already active
+    if (isActive) {
+      toast({
+        title: "Mining already active",
+        description: "You already have an active mining operation running.",
         variant: "destructive",
       });
       return;
@@ -213,6 +223,13 @@ const Game = () => {
         
         <div className="flex space-x-3">
           <Button 
+            onClick={() => navigate('/home')} 
+            variant="outline"
+            className="glass rounded-full text-white border-amber-500 hover:bg-amber-500/20"
+          >
+            <Home size={18} className="mr-2" /> Home
+          </Button>
+          <Button 
             onClick={() => navigate('/leaderboard')} 
             variant="outline"
             className="glass rounded-full text-white border-game-blue hover:bg-game-blue/20"
@@ -220,11 +237,11 @@ const Game = () => {
             <BarChart4 size={18} className="mr-2" /> Leaderboard
           </Button>
           <Button 
-            onClick={() => navigate('/')} 
+            onClick={() => navigate('/home')} 
             variant="outline"
             className="glass rounded-full text-white border-game-green hover:bg-game-green/20"
           >
-            Home
+            <Info size={18} className="mr-2" /> About GCT
           </Button>
         </div>
       </div>
