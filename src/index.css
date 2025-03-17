@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 @tailwind base;
@@ -74,13 +75,28 @@
     background-image: 
       radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 0%, transparent 20%),
       radial-gradient(circle at 80% 60%, rgba(255,255,255,0.05) 0%, transparent 20%),
-      linear-gradient(to bottom, #1a1f2c, #252b3b);
-    background-color: #1a1f2c;
+      linear-gradient(to bottom, #1B4D3E, #0D3828);
+    background-color: #1B4D3E;
   }
 
   .page-transition {
     @apply animate-page-transition;
   }
+}
+
+/* Poker themed styles */
+.poker-chip {
+  background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 10px, rgba(30, 30, 30, 0.7) 10px, rgba(30, 30, 30, 0.7) 20px);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.poker-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(224, 175, 104, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Glass morphism effect */
@@ -168,16 +184,16 @@
 
 /* Special coin glow effect */
 .special-coin {
-  filter: drop-shadow(0 0 15px theme('colors.game.yellow'));
+  filter: drop-shadow(0 0 15px theme('colors.poker.gold'));
   animation: glow 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
   from {
-    filter: drop-shadow(0 0 5px theme('colors.game.yellow'));
+    filter: drop-shadow(0 0 5px theme('colors.poker.gold'));
   }
   to {
-    filter: drop-shadow(0 0 20px theme('colors.game.yellow'));
+    filter: drop-shadow(0 0 20px theme('colors.poker.gold'));
   }
 }
 
@@ -268,24 +284,6 @@
   left: 100%;
 }
 
-/* Crypto theme additions */
-.crypto-grid {
-  background-image: 
-    linear-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-.crypto-glow {
-  text-shadow: 0 0 5px rgba(225, 225, 225, 0.5);
-}
-
-.crypto-card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
 /* Page transitions */
 @keyframes page-transition {
   0% {
@@ -309,3 +307,5 @@
   border-radius: 50%;
   background: linear-gradient(to right, #d4a456, #ffd700, #d4a456);
 }
+
+/* Create SVG files for poker suit icons */

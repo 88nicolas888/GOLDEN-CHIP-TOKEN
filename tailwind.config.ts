@@ -72,6 +72,16 @@ export default {
 					'green': '#9ECE6A',
 					'background': '#F2FCE2',
 					'card': '#FEF7CD'
+				},
+				poker: {
+					'felt': '#1B4D3E',
+					'red': '#D12C2C',
+					'blue': '#2C5CD1',
+					'gold': '#E0AF68',
+					'black': '#000000',
+					'gray': '#555555',
+					'purple': '#7E3BA1',
+					'card': '#FFFFFF'
 				}
 			},
 			borderRadius: {

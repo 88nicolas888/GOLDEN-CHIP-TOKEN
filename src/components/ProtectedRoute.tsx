@@ -26,9 +26,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-poker-felt">
         <div className="animate-pulse-scale">
-          <div className="w-20 h-20 rounded-full bg-primary opacity-75"></div>
+          <div className="w-20 h-20 rounded-full bg-poker-gold opacity-75"></div>
         </div>
       </div>
     );

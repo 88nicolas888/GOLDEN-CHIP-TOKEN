@@ -34,39 +34,44 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+      <div className="flex items-center justify-center min-h-screen bg-poker-felt">
         <div className="animate-pulse-scale">
-          <div className="w-20 h-20 rounded-full bg-game-yellow opacity-75"></div>
+          <div className="w-20 h-20 rounded-full bg-poker-gold opacity-75"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
+    <div className="relative min-h-screen overflow-hidden bg-poker-felt">
       {/* Background decoration */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-[10%] left-[5%] w-20 h-20 rounded-full bg-game-pink opacity-10 animate-float"></div>
-        <div className="absolute top-[30%] right-[15%] w-32 h-32 rounded-full bg-game-blue opacity-10 animate-float" style={{ animationDelay: '0.5s' }}></div>
-        <div className="absolute bottom-[15%] left-[20%] w-24 h-24 rounded-full bg-game-green opacity-10 animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-[25%] right-[10%] w-16 h-16 rounded-full bg-game-purple opacity-10 animate-float" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute top-[10%] left-[5%] w-24 h-24 opacity-20 animate-float">
+          <img src="/spade.svg" alt="Spade" className="w-full h-full" />
+        </div>
+        <div className="absolute top-[30%] right-[15%] w-32 h-32 opacity-20 animate-float" style={{ animationDelay: '0.5s' }}>
+          <img src="/heart.svg" alt="Heart" className="w-full h-full" />
+        </div>
+        <div className="absolute bottom-[15%] left-[20%] w-28 h-28 opacity-20 animate-float" style={{ animationDelay: '1s' }}>
+          <img src="/club.svg" alt="Club" className="w-full h-full" />
+        </div>
+        <div className="absolute bottom-[25%] right-[10%] w-24 h-24 opacity-20 animate-float" style={{ animationDelay: '1.5s' }}>
+          <img src="/diamond.svg" alt="Diamond" className="w-full h-full" />
+        </div>
         
-        <div className="absolute top-[50%] left-[50%] w-96 h-96 rounded-full border border-game-yellow/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
-        <div className="absolute top-[50%] left-[50%] w-72 h-72 rounded-full border border-game-green/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
-        <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-game-blue/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
-        
-        {/* Glowing light effects */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-500/5 blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-purple-500/5 blur-3xl"></div>
+        {/* Card patterns in the background */}
+        <div className="absolute top-[50%] left-[50%] w-96 h-96 rounded-full border border-poker-gold/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
+        <div className="absolute top-[50%] left-[50%] w-72 h-72 rounded-full border border-poker-red/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
+        <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-white/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
       </div>
 
       {/* User wallet & balance */}
       {user && (
         <div className="absolute top-4 left-4 z-50">
-          <div className="glass rounded-full px-5 py-2 flex items-center space-x-2">
+          <div className="poker-chip rounded-full px-5 py-2 flex items-center space-x-2">
             <Wallet size={16} className="text-white" />
             <span className="font-medium text-white">{user.username}</span>
-            <span className="text-xl font-bold text-game-yellow ml-2">{user.gct} GCT</span>
+            <span className="text-xl font-bold text-poker-gold ml-2">{user.gct} GCT</span>
           </div>
           
           <Button 
@@ -82,10 +87,10 @@ const Index = () => {
 
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12">
         <div className="mb-12 perspective">
-          {/* Enhanced 3D Coin with more realistic effects */}
+          {/* Enhanced 3D Poker Chip styled Coin */}
           <div className="relative w-56 h-56 mx-auto preserve-3d animate-spin-slow">
             {/* Coin front face */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 via-amber-500 to-amber-600 backface-hidden"
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-poker-gold via-amber-500 to-amber-600 backface-hidden"
               style={{
                 transform: 'translateZ(8px)',
                 boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 215, 0, 0.6)'
@@ -93,8 +98,8 @@ const Index = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-white font-bold text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">GCT</div>
               </div>
-              {/* Realistic embossed effect */}
-              <div className="absolute inset-5 rounded-full border-4 border-amber-300/30"></div>
+              {/* Realistic chip edge pattern */}
+              <div className="absolute inset-4 rounded-full border-dashed border-4 border-white/40"></div>
               {/* Radial shine */}
               <div className="absolute inset-0 rounded-full overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-radial from-yellow-100/80 via-transparent to-transparent" 
@@ -108,19 +113,19 @@ const Index = () => {
             </div>
             
             {/* Coin back face */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 backface-hidden"
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-poker-red via-poker-red to-red-700 backface-hidden"
               style={{
                 transform: 'rotateY(180deg) translateZ(8px)',
-                boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 215, 0, 0.6)'
+                boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.8), 0 0 25px rgba(220, 50, 50, 0.6)'
               }}>
               <div className="flex items-center justify-center h-full">
                 <div className="text-white font-bold text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">GCT</div>
               </div>
-              {/* Realistic embossed effect */}
-              <div className="absolute inset-5 rounded-full border-4 border-amber-300/30"></div>
+              {/* Realistic poker chip pattern */}
+              <div className="absolute inset-4 rounded-full border-dashed border-4 border-white/40"></div>
               {/* Radial shine */}
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-yellow-100/80 via-transparent to-transparent" 
+                <div className="absolute inset-0 bg-gradient-radial from-red-100/80 via-transparent to-transparent" 
                   style={{
                     transformOrigin: '70% 30%',
                     transform: 'rotate(35deg)',
@@ -130,11 +135,11 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Coin edge - thicker and more detailed */}
+            {/* Coin edge - thicker and with poker chip ridges */}
             <div className="absolute inset-0 rounded-full"
               style={{
                 transform: 'rotateY(90deg)',
-                background: 'linear-gradient(to bottom, #FFD700, #B8860B, #FFD700)',
+                background: 'repeating-linear-gradient(to bottom, #FFD700, #B8860B, #FFD700 10px)',
                 width: '16px',
                 left: 'calc(50% - 8px)',
                 boxShadow: '0 0 8px rgba(255, 215, 0, 0.8)'
@@ -144,19 +149,10 @@ const Index = () => {
             <div className="absolute inset-0 rounded-full"
               style={{
                 transform: 'rotateX(90deg)',
-                background: 'linear-gradient(to right, #FFD700, #B8860B, #FFD700)',
+                background: 'repeating-linear-gradient(to right, #FFD700, #B8860B, #FFD700 10px)',
                 height: '16px',
                 top: 'calc(50% - 8px)',
                 boxShadow: '0 0 8px rgba(255, 215, 0, 0.8)'
-              }}></div>
-              
-            {/* Detailed coin rim with radial texture */}
-            <div className="absolute inset-0 rounded-full overflow-hidden"
-              style={{
-                transform: 'translateZ(0)',
-                background: 'repeating-linear-gradient(to right, transparent, transparent 8px, rgba(255,215,0,0.3) 8px, rgba(255,215,0,0.3) 10px)',
-                opacity: 0.5,
-                mixBlendMode: 'overlay'
               }}></div>
               
             {/* Dynamic light reflection */}
@@ -175,7 +171,7 @@ const Index = () => {
         </div>
 
         <h1 className="text-5xl font-bold mb-4 text-center text-white">
-          GCT AIRDROP
+          GCT TOKEN MINING
         </h1>
         
         <p className="text-xl mb-10 text-center max-w-lg text-white">
@@ -187,13 +183,13 @@ const Index = () => {
             <>
               <Button 
                 onClick={() => navigate('/game')} 
-                className="bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
+                className="bg-gradient-to-r from-poker-red to-poker-gold text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
               >
                 Start Mining
               </Button>
               <Button 
                 onClick={() => navigate('/leaderboard')} 
-                className="bg-gradient-to-r from-game-purple to-game-pink text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
+                className="bg-gradient-to-r from-poker-blue to-poker-purple text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90"
               >
                 Leaderboard
               </Button>
@@ -209,7 +205,7 @@ const Index = () => {
             <>
               <Button 
                 onClick={() => navigate('/connect')} 
-                className="bg-gradient-to-r from-game-green to-game-blue text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90 flex items-center"
+                className="bg-gradient-to-r from-poker-red to-poker-gold text-white text-lg px-8 py-6 rounded-full shadow-lg hover:opacity-90 flex items-center"
               >
                 <Wallet size={24} className="mr-2" /> Connect Wallet
               </Button>
@@ -224,9 +220,9 @@ const Index = () => {
           )}
         </div>
 
-        <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 max-w-lg">
-          <h2 className="text-2xl font-bold mb-4 text-center text-white">How To Mine GCT</h2>
-          <ul className="list-disc pl-6 space-y-2 text-white">
+        <div className="poker-card rounded-xl p-6 max-w-lg">
+          <h2 className="text-2xl font-bold mb-4 text-center text-poker-black">How To Mine GCT</h2>
+          <ul className="list-disc pl-6 space-y-2 text-poker-black">
             <li>Click "Start Mining" to begin automatic mining</li>
             <li>Mining generates 1 GCT every 5 seconds</li>
             <li>Mining runs for 24 hours once activated</li>

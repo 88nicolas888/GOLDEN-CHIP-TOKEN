@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -96,21 +97,21 @@ const Leaderboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-game-background p-6 page-transition">
+    <div className="min-h-screen bg-poker-felt p-6 page-transition">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Leaderboard <span className="text-lg font-normal">(Top 100)</span></h1>
+          <h1 className="text-3xl font-bold text-white">Leaderboard <span className="text-lg font-normal">(Top 100)</span></h1>
           <div className="flex space-x-3">
             <Button 
               onClick={() => navigate('/game')} 
-              className="bg-game-green text-white rounded-full"
+              className="bg-poker-red text-white rounded-full"
             >
               Play Game
             </Button>
             <Button 
               onClick={() => navigate('/home')} 
               variant="outline"
-              className="rounded-full"
+              className="rounded-full text-white border-white/30 hover:bg-white/10"
             >
               Home
             </Button>
@@ -118,8 +119,8 @@ const Leaderboard = () => {
         </div>
         
         {user && userRank !== null && (
-          <div className="glass rounded-xl p-4 mb-6 animate-fade-in">
-            <p className="text-lg">
+          <div className="poker-card rounded-xl p-4 mb-6 animate-fade-in">
+            <p className="text-lg text-poker-black">
               <span className="font-medium">Your rank:</span>{' '}
               <span className="font-bold">#{userRank}</span> with{' '}
               <span className="font-bold">{user.gct} GCT</span>
@@ -127,8 +128,8 @@ const Leaderboard = () => {
           </div>
         )}
         
-        <div className="bg-white/90 rounded-xl shadow-lg overflow-hidden">
-          <div className="p-4 bg-gradient-to-r from-game-blue to-game-purple text-white">
+        <div className="bg-white/95 rounded-xl shadow-lg overflow-hidden poker-card">
+          <div className="p-4 bg-gradient-to-r from-poker-red to-poker-gold text-white">
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-2 font-bold text-center">Rank</div>
               <div className="col-span-6 font-bold">Player</div>
@@ -139,13 +140,13 @@ const Leaderboard = () => {
           {isLoading ? (
             <div className="flex justify-center items-center p-20">
               <div className="animate-pulse-scale">
-                <div className="w-16 h-16 rounded-full bg-primary opacity-75"></div>
+                <div className="w-16 h-16 rounded-full bg-poker-red opacity-75"></div>
               </div>
             </div>
           ) : (
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-poker-gold/20">
               {leaderboard.length === 0 ? (
-                <div className="p-10 text-center text-gray-500">
+                <div className="p-10 text-center text-poker-gray">
                   No players on the leaderboard yet. Be the first!
                 </div>
               ) : (
@@ -154,8 +155,8 @@ const Leaderboard = () => {
                   return (
                     <div 
                       key={player.id} 
-                      className={`grid grid-cols-12 gap-4 p-4 hover:bg-gray-50 transition-colors ${
-                        player.id === user?.id ? 'bg-game-background/30' : ''
+                      className={`grid grid-cols-12 gap-4 p-4 hover:bg-poker-gold/5 transition-colors ${
+                        player.id === user?.id ? 'bg-poker-felt/10' : ''
                       }`}
                     >
                       <div className="col-span-2 text-center">
@@ -175,7 +176,7 @@ const Leaderboard = () => {
                       <div className="col-span-6 font-medium text-black">
                         <span className="font-semibold">{player.username}</span>
                         {player.id === user?.id && (
-                          <span className="ml-2 text-xs bg-game-green text-white px-2 py-0.5 rounded-full">You</span>
+                          <span className="ml-2 text-xs bg-poker-red text-white px-2 py-0.5 rounded-full">You</span>
                         )}
                       </div>
                       <div className="col-span-4 text-right font-bold text-black">
@@ -190,7 +191,7 @@ const Leaderboard = () => {
           
           {/* Pagination controls */}
           {!isLoading && leaderboard.length > 0 && totalPages > 1 && (
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-poker-gold/20">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
