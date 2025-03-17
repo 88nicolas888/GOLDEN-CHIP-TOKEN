@@ -23,8 +23,8 @@ const ConditionalRedirect = () => {
   
   if (loading) return null;
   
-  // If user is logged in, redirect to game, otherwise to connect wallet
-  return user ? <Navigate to="/game" replace /> : <Navigate to="/connect" replace />;
+  // If user is logged in, redirect to home, otherwise to connect wallet
+  return user ? <Navigate to="/home" replace /> : <Navigate to="/connect" replace />;
 };
 
 // Wrap routes with AnimatePresence for transitions
@@ -49,7 +49,7 @@ const AnimatedRoutes = () => {
           </motion.div>
         } />
         
-        {/* About GCT page - accessible to everyone regardless of mining status */}
+        {/* Home page / About GCT page - accessible to everyone regardless of mining status */}
         <Route path="/home" element={
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -57,7 +57,7 @@ const AnimatedRoutes = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <AboutGCT />
+            <Index />
           </motion.div>
         } />
         
@@ -94,6 +94,18 @@ const AnimatedRoutes = () => {
             </motion.div>
           } 
         />
+        
+        {/* About GCT page - accessible to everyone */}
+        <Route path="/about" element={
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <AboutGCT />
+          </motion.div>
+        } />
         
         {/* 404 page */}
         <Route path="*" element={

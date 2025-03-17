@@ -5,13 +5,14 @@ import { toast } from '@/components/ui/use-toast';
 interface User {
   id: string;
   walletAddress: string;
+  username: string;
   gct: number;
 }
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  connectWallet: (walletAddress: string) => Promise<boolean>;
+  connectWallet: (walletAddress: string, username: string) => Promise<boolean>;
   disconnectWallet: () => void;
   updateGCT: (amount: number) => void;
   checkAndUpdateMiningRewards: () => void;
@@ -58,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // For demo purposes, we're storing users in localStorage
   // In a real app, this would be a database
-  const getUsers = (): Record<string, { walletAddress: string; gct: number }> => {
+  const getUsers = (): Record<string, { walletAddress: string; username: string; gct: number }> => {
     const users = localStorage.getItem('users');
     return users ? JSON.parse(users) : {};
   };
@@ -67,12 +68,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('users', JSON.stringify(users));
   };
 
-  const connectWallet = async (walletAddress: string): Promise<boolean> => {
+  const connectWallet = async (walletAddress: string, username: string): Promise<boolean> => {
     // Validate wallet address format (basic validation)
     if (!walletAddress.startsWith('0x') || walletAddress.length !== 42) {
       toast({
         title: "Invalid wallet address",
         description: "Please enter a valid cryptocurrency wallet address",
+        variant: "destructive"
+      });
+      return false;
+    }
+    
+    // Validate username
+    if (!username.trim() || username.length < 3) {
+      toast({
+        title: "Invalid username",
+        description: "Please enter a username with at least 3 characters",
         variant: "destructive"
       });
       return false;
@@ -92,13 +103,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
     
     if (existingUser) {
-      // If wallet exists, use existing record
+      // If wallet exists, use existing record but update username
       [userId, { gct: userGct }] = existingUser;
+      users[userId].username = username; // Update username
+      saveUsers(users);
     } else {
       // Create new user record for this wallet
       userId = Date.now().toString();
       userGct = 0;
-      users[userId] = { walletAddress, gct: userGct };
+      users[userId] = { walletAddress, username, gct: userGct };
       saveUsers(users);
     }
     
@@ -106,6 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const loggedInUser = {
       id: userId,
       walletAddress,
+      username,
       gct: userGct
     };
     
@@ -117,7 +131,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     toast({
       title: "Wallet connected",
-      description: `Connected to ${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}`,
+      description: `Connected as ${username}`,
     });
     return true;
   };
