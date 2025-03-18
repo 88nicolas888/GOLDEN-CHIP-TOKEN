@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 @tailwind base;
@@ -81,6 +82,20 @@
   .page-transition {
     @apply animate-page-transition;
   }
+}
+
+/* New 2D spin animation */
+@keyframes spin-2d {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-2d {
+  animation: spin-2d 6s linear infinite;
 }
 
 /* Poker themed styles */

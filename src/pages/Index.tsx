@@ -1,3 +1,4 @@
+
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -78,7 +79,7 @@ const Index = () => {
 
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12">
         <div className="mb-12">
-          <div className="relative w-56 h-56 mx-auto animate-spin-slow">
+          <div className="relative w-56 h-56 mx-auto animate-spin-2d">
             <div className="absolute inset-0 rounded-full"
               style={{
                 background: 'url("/lovable-uploads/55aa8f9c-15e3-4dea-bb65-8f90722349bd.png")',

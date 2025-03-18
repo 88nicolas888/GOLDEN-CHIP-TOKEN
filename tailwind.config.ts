@@ -116,9 +116,9 @@ export default {
 					'0%, 100%': { transform: 'scale(1)' },
 					'50%': { transform: 'scale(1.05)' }
 				},
-				'spin-slow': {
-					'0%': { transform: 'rotateY(0deg)' },
-					'100%': { transform: 'rotateY(360deg)' }
+				'spin-2d': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' }
 				},
 				'fade-in': {
 					'0%': { opacity: '0' },
@@ -136,7 +136,7 @@ export default {
 				'collect': 'collect 0.3s ease-out forwards',
 				'float': 'float 3s ease-in-out infinite',
 				'pulse-scale': 'pulse-scale 2s ease-in-out infinite',
-				'spin-slow': 'spin-slow 3s linear infinite',
+				'spin-2d': 'spin-2d 6s linear infinite',
 				'fade-in': 'fade-in 0.5s ease-out',
 				'page-transition': 'page-transition 0.5s ease-out'
 			}
