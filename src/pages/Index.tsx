@@ -4,7 +4,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Wallet, LogOut, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 const Index = () => {
   const { user, disconnectWallet, checkAndUpdateMiningRewards } = useAuth();
@@ -87,82 +86,60 @@ const Index = () => {
 
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12">
         <div className="mb-12 perspective">
-          {/* Enhanced 3D Poker Chip styled Coin */}
+          {/* Enhanced 3D Poker Chip with DOX POKER.NET design */}
           <div className="relative w-56 h-56 mx-auto preserve-3d animate-spin-slow">
-            {/* Coin front face */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-poker-gold via-amber-500 to-amber-600 backface-hidden"
+            {/* Chip front face */}
+            <div className="absolute inset-0 rounded-full backface-hidden"
               style={{
                 transform: 'translateZ(8px)',
-                boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 215, 0, 0.6)'
+                backgroundImage: 'url("/diamond.svg")',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)'
               }}>
-              <div className="flex items-center justify-center h-full">
-                <div className="text-white font-bold text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">GCT</div>
-              </div>
-              {/* Realistic chip edge pattern */}
-              <div className="absolute inset-4 rounded-full border-dashed border-4 border-white/40"></div>
-              {/* Radial shine */}
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-yellow-100/80 via-transparent to-transparent" 
-                  style={{
-                    transformOrigin: '30% 30%',
-                    transform: 'rotate(-35deg)',
-                    opacity: 0.7
-                  }}
-                ></div>
-              </div>
             </div>
             
-            {/* Coin back face */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-poker-red via-poker-red to-red-700 backface-hidden"
+            {/* Chip back face */}
+            <div className="absolute inset-0 rounded-full backface-hidden"
               style={{
                 transform: 'rotateY(180deg) translateZ(8px)',
-                boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.8), 0 0 25px rgba(220, 50, 50, 0.6)'
+                backgroundImage: 'url("/diamond.svg")',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)'
               }}>
-              <div className="flex items-center justify-center h-full">
-                <div className="text-white font-bold text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">GCT</div>
-              </div>
-              {/* Realistic poker chip pattern */}
-              <div className="absolute inset-4 rounded-full border-dashed border-4 border-white/40"></div>
-              {/* Radial shine */}
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-red-100/80 via-transparent to-transparent" 
-                  style={{
-                    transformOrigin: '70% 30%',
-                    transform: 'rotate(35deg)',
-                    opacity: 0.7
-                  }}
-                ></div>
-              </div>
             </div>
             
-            {/* Coin edge - thicker and with poker chip ridges */}
+            {/* Chip edge */}
             <div className="absolute inset-0 rounded-full"
               style={{
                 transform: 'rotateY(90deg)',
-                background: 'repeating-linear-gradient(to bottom, #FFD700, #B8860B, #FFD700 10px)',
+                background: 'repeating-linear-gradient(to bottom, #FFD700, #000000, #FFD700 10px)',
                 width: '16px',
                 left: 'calc(50% - 8px)',
                 boxShadow: '0 0 8px rgba(255, 215, 0, 0.8)'
               }}></div>
               
-            {/* More coin edges for realistic 3D effect */}
+            {/* More chip edges for realistic 3D effect */}
             <div className="absolute inset-0 rounded-full"
               style={{
                 transform: 'rotateX(90deg)',
-                background: 'repeating-linear-gradient(to right, #FFD700, #B8860B, #FFD700 10px)',
+                background: 'repeating-linear-gradient(to right, #FFD700, #000000, #FFD700 10px)',
                 height: '16px',
                 top: 'calc(50% - 8px)',
                 boxShadow: '0 0 8px rgba(255, 215, 0, 0.8)'
               }}></div>
               
             {/* Dynamic light reflection */}
-            <div className="absolute inset-0 rounded-full overflow-hidden opacity-70 backface-hidden"
+            <div className="absolute inset-0 rounded-full overflow-hidden opacity-20 backface-hidden"
               style={{
                 transform: 'translateZ(9px) rotateZ(-15deg)', 
                 background: 'linear-gradient(120deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 100%)'
               }}></div>
               
-            <div className="absolute inset-0 rounded-full overflow-hidden opacity-70 backface-hidden"
+            <div className="absolute inset-0 rounded-full overflow-hidden opacity-20 backface-hidden"
               style={{
                 transform: 'rotateY(180deg) translateZ(9px) rotateZ(-15deg)', 
                 background: 'linear-gradient(120deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 100%)'

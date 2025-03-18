@@ -16,6 +16,7 @@ interface AuthContextType {
   disconnectWallet: () => void;
   updateGCT: (amount: number) => void;
   checkAndUpdateMiningRewards: () => void;
+  checkUsernameExists: (username: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -31,6 +32,12 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Clear all users when the app starts (for this request only)
+  useEffect(() => {
+    localStorage.removeItem('users');
+    setLoading(false);
+  }, []);
 
   // Load user from localStorage on initial render
   useEffect(() => {
@@ -68,12 +75,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('users', JSON.stringify(users));
   };
 
+  // Check if username already exists
+  const checkUsernameExists = async (username: string): Promise<boolean> => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    const users = getUsers();
+    return Object.values(users).some(
+      (user: any) => user.username.toLowerCase() === username.toLowerCase()
+    );
+  };
+
   const connectWallet = async (walletAddress: string, username: string): Promise<boolean> => {
-    // Validate wallet address format (basic validation)
-    if (!walletAddress.startsWith('0x') || walletAddress.length !== 42) {
+    // Validate wallet address is not empty
+    if (!walletAddress.trim()) {
       toast({
         title: "Invalid wallet address",
-        description: "Please enter a valid cryptocurrency wallet address",
+        description: "Please enter a wallet address",
         variant: "destructive"
       });
       return false;
@@ -84,6 +102,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       toast({
         title: "Invalid username",
         description: "Please enter a username with at least 3 characters",
+        variant: "destructive"
+      });
+      return false;
+    }
+    
+    // Check if username is already taken
+    const isUsernameTaken = await checkUsernameExists(username);
+    if (isUsernameTaken) {
+      toast({
+        title: "Username unavailable",
+        description: "This username is already taken. Please choose a different one.",
         variant: "destructive"
       });
       return false;
@@ -218,7 +247,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       connectWallet, 
       disconnectWallet, 
       updateGCT,
-      checkAndUpdateMiningRewards 
+      checkAndUpdateMiningRewards,
+      checkUsernameExists
     }}>
       {children}
     </AuthContext.Provider>

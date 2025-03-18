@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -12,17 +12,20 @@ const ConnectWallet = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [username, setUsername] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { connectWallet, user } = useAuth();
+  const [usernameError, setUsernameError] = useState('');
+  const { connectWallet, user, checkUsernameExists } = useAuth();
   const navigate = useNavigate();
 
   // If user is already logged in, redirect to home page
-  if (user) {
-    navigate('/home');
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      navigate('/home');
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setUsernameError('');
     
     if (!walletAddress.trim() || !username.trim()) {
       toast({
@@ -30,6 +33,19 @@ const ConnectWallet = () => {
         description: "Please enter both wallet address and username",
         variant: "destructive"
       });
+      return;
+    }
+    
+    // Check username length
+    if (username.length < 3) {
+      setUsernameError("Username must be at least 3 characters");
+      return;
+    }
+    
+    // Check if username already exists
+    const usernameExists = await checkUsernameExists(username);
+    if (usernameExists) {
+      setUsernameError("This username is already taken. Please choose a different one.");
       return;
     }
     
@@ -61,7 +77,7 @@ const ConnectWallet = () => {
             </div>
           </div>
           <h1 className="text-3xl font-bold mb-2 text-poker-black">Connect Your Wallet</h1>
-          <p className="text-poker-gray">Connect your crypto wallet to start collecting GCT tokens</p>
+          <p className="text-poker-black">Connect your crypto wallet to start collecting GCT tokens</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -75,11 +91,14 @@ const ConnectWallet = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter your username"
-                className="rounded-lg p-3 pl-10 bg-white/95 border-poker-gold/50"
+                className="rounded-lg p-3 pl-10 bg-white/95 border-poker-gold/50 text-poker-black"
                 required
               />
             </div>
-            <p className="text-xs text-poker-gray">Choose a username to display on the leaderboard</p>
+            {usernameError && (
+              <p className="text-xs text-red-500">{usernameError}</p>
+            )}
+            <p className="text-xs text-poker-black">Choose a unique username to display on the leaderboard</p>
           </div>
 
           <div className="space-y-2">
@@ -89,11 +108,11 @@ const ConnectWallet = () => {
               type="text"
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
-              placeholder="0x..."
-              className="rounded-lg p-3 bg-white/95 font-mono border-poker-gold/50"
+              placeholder="Enter your wallet address"
+              className="rounded-lg p-3 bg-white/95 font-mono border-poker-gold/50 text-poker-black"
               required
             />
-            <p className="text-xs text-poker-gray">Enter your Ethereum wallet address (e.g., 0x1234...5678)</p>
+            <p className="text-xs text-poker-black">Enter your crypto wallet address (any format)</p>
           </div>
           
           <Button 
