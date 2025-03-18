@@ -48,6 +48,9 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
     animationFillMode: 'forwards'
   } : {};
 
+  // Calculate a slightly randomized spin duration for more natural appearance
+  const spinDuration = coin.isSpecial ? 3.5 + Math.random() * 1.5 : 2.5 + Math.random() * 1.5;
+
   // Create a combined style object with all properties
   const coinStyle = {
     '--fall-duration': `${coin.duration}s`,
@@ -69,7 +72,9 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
     >
       <div
         className={`coin-inner preserve-3d ${isSpinning ? 'animate-spin-slow' : ''}`}
+        style={{ animationDuration: `${spinDuration}s` }}
       >
+        {/* Front face of coin */}
         <div
           className={`coin-face coin-front flex items-center justify-center ${
             coin.isSpecial ? 'bg-game-yellow' : 'bg-game-orange'
@@ -99,6 +104,8 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
             )}
           </div>
         </div>
+
+        {/* Back face of coin */}
         <div
           className={`coin-face coin-back flex items-center justify-center ${
             coin.isSpecial ? 'bg-game-yellow' : 'bg-game-orange'
@@ -117,32 +124,80 @@ export const Coin: React.FC<CoinProps> = ({ coin, onClick }) => {
           <span className="text-white font-bold text-center drop-shadow-[0_0_2px_rgba(0,0,0,0.5)]">GCT</span>
         </div>
         
-        {/* Improved edge of the coin for 3D effect */}
-        <div className="absolute inset-0 rounded-full z-[-1] preserve-3d" style={{
-          transform: 'translateZ(-2px)',
+        {/* Enhanced edge effects - more pronounced and multidimensional */}
+        <div className="absolute inset-0 rounded-full coin-edge-main" style={{
+          transform: 'translateZ(0)',
           background: coin.isSpecial 
-            ? 'linear-gradient(to right, #D4A456, #FFD700, #D4A456)' 
-            : 'linear-gradient(to right, #E88E54, #FF9E64, #E88E54)',
-          border: coin.isSpecial ? '1px solid #FFD700' : '1px solid #FFA07A',
+            ? 'linear-gradient(to right, #C8A95C, #FFD700, #E0AF68, #FFD700, #C8A95C)' 
+            : 'linear-gradient(to right, #D47F3C, #FF9E64, #E88E54, #FF9E64, #D47F3C)',
+          border: coin.isSpecial ? '1px solid #C8A95C' : '1px solid #D47F3C',
+          opacity: 0.8,
+          zIndex: -1
         }}></div>
         
-        {/* Additional edge for enhanced 3D effect */}
-        <div className="absolute inset-0 rounded-full preserve-3d" style={{
+        {/* Top edge highlights */}
+        <div className="absolute rounded-full overflow-hidden" style={{
           transform: 'rotateX(90deg)',
           height: '4px',
-          top: 'calc(50% - 2px)',
+          width: '92%',
+          top: '1px',
+          left: '4%',
           background: coin.isSpecial 
-            ? 'linear-gradient(to right, #D4A456, #FFD700, #D4A456)' 
-            : 'linear-gradient(to right, #E88E54, #FF9E64, #E88E54)',
+            ? 'linear-gradient(to right, #8E9196, #FFD700, #8E9196)' 
+            : 'linear-gradient(to right, #8E9196, #FF9E64, #8E9196)',
+          opacity: 0.7,
+          zIndex: -1
         }}></div>
         
-        <div className="absolute inset-0 rounded-full preserve-3d" style={{
+        {/* Bottom edge shadow */}
+        <div className="absolute rounded-full overflow-hidden" style={{
+          transform: 'rotateX(90deg)',
+          height: '4px',
+          width: '92%',
+          bottom: '1px',
+          left: '4%',
+          background: coin.isSpecial 
+            ? 'linear-gradient(to right, #333, #D4A456, #333)' 
+            : 'linear-gradient(to right, #333, #E88E54, #333)',
+          opacity: 0.7,
+          zIndex: -1
+        }}></div>
+        
+        {/* Left edge highlights */}
+        <div className="absolute rounded-full overflow-hidden" style={{
           transform: 'rotateY(90deg)',
           width: '4px',
-          left: 'calc(50% - 2px)',
+          height: '92%',
+          left: '1px',
+          top: '4%',
           background: coin.isSpecial 
-            ? 'linear-gradient(to bottom, #D4A456, #FFD700, #D4A456)' 
-            : 'linear-gradient(to bottom, #E88E54, #FF9E64, #E88E54)',
+            ? 'linear-gradient(to bottom, #8E9196, #FFD700, #8E9196)' 
+            : 'linear-gradient(to bottom, #8E9196, #FF9E64, #8E9196)',
+          opacity: 0.7,
+          zIndex: -1
+        }}></div>
+        
+        {/* Right edge shadow */}
+        <div className="absolute rounded-full overflow-hidden" style={{
+          transform: 'rotateY(90deg)',
+          width: '4px',
+          height: '92%',
+          right: '1px',
+          top: '4%',
+          background: coin.isSpecial 
+            ? 'linear-gradient(to bottom, #333, #D4A456, #333)' 
+            : 'linear-gradient(to bottom, #333, #E88E54, #333)',
+          opacity: 0.7,
+          zIndex: -1
+        }}></div>
+        
+        {/* Light reflection on edges while spinning - creates the illusion of light catching the edge */}
+        <div className="absolute inset-0 rounded-full overflow-hidden coin-shine" style={{
+          background: 'linear-gradient(45deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%)',
+          opacity: 0.3,
+          mixBlendMode: 'overlay',
+          animation: 'shine-sweep 2s linear infinite',
+          zIndex: 1
         }}></div>
       </div>
     </div>
