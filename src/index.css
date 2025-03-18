@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 @tailwind base;
@@ -197,13 +196,13 @@
   }
 }
 
-/* Spin animation */
+/* Spin animation - updated for 2D only */
 @keyframes spin-slow {
   from {
-    transform: rotateY(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: rotateY(360deg);
+    transform: rotate(360deg);
   }
 }
 
