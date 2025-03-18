@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -86,28 +85,26 @@ const Index = () => {
 
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12">
         <div className="mb-12 perspective">
-          {/* Enhanced 3D Poker Chip with DOX POKER.NET design */}
+          {/* Use uploaded poker chip image */}
           <div className="relative w-56 h-56 mx-auto preserve-3d animate-spin-slow">
-            {/* Chip front face */}
+            {/* Front face - uploaded image */}
             <div className="absolute inset-0 rounded-full backface-hidden"
               style={{
                 transform: 'translateZ(8px)',
-                backgroundImage: 'url("/diamond.svg")',
+                background: 'url("/lovable-uploads/55aa8f9c-15e3-4dea-bb65-8f90722349bd.png")',
                 backgroundSize: 'contain',
                 backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
                 boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)'
               }}>
             </div>
             
-            {/* Chip back face */}
+            {/* Back face - same uploaded image */}
             <div className="absolute inset-0 rounded-full backface-hidden"
               style={{
                 transform: 'rotateY(180deg) translateZ(8px)',
-                backgroundImage: 'url("/diamond.svg")',
+                background: 'url("/lovable-uploads/55aa8f9c-15e3-4dea-bb65-8f90722349bd.png")',
                 backgroundSize: 'contain',
                 backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
                 boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)'
               }}>
             </div>
