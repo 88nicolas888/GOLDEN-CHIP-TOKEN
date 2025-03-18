@@ -9,7 +9,9 @@ const Index = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
+  // Add loading state to ensure content renders properly
   useEffect(() => {
+    // Small timeout to ensure styles are applied
     const timer = setTimeout(() => {
       setLoading(false);
     }, 100);
@@ -17,11 +19,13 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Check for mining rewards when page loads
   useEffect(() => {
     if (user) {
       checkAndUpdateMiningRewards();
       
-      const interval = setInterval(checkAndUpdateMiningRewards, 30000);
+      // Set up interval to check mining rewards periodically
+      const interval = setInterval(checkAndUpdateMiningRewards, 30000); // Check every 30 seconds
       return () => clearInterval(interval);
     }
   }, [user, checkAndUpdateMiningRewards]);
@@ -38,6 +42,7 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-poker-felt">
+      {/* Background decoration */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-[10%] left-[5%] w-24 h-24 opacity-20 animate-float">
           <img src="/spade.svg" alt="Spade" className="w-full h-full" />
@@ -52,11 +57,13 @@ const Index = () => {
           <img src="/diamond.svg" alt="Diamond" className="w-full h-full" />
         </div>
         
+        {/* Card patterns in the background */}
         <div className="absolute top-[50%] left-[50%] w-96 h-96 rounded-full border border-poker-gold/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
         <div className="absolute top-[50%] left-[50%] w-72 h-72 rounded-full border border-poker-red/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
         <div className="absolute top-[50%] left-[50%] w-48 h-48 rounded-full border border-white/20 opacity-30 translate-x-[-50%] translate-y-[-50%]"></div>
       </div>
 
+      {/* User wallet & balance */}
       {user && (
         <div className="absolute top-4 left-4 z-50">
           <div className="poker-chip rounded-full px-5 py-2 flex items-center space-x-2">
@@ -77,16 +84,63 @@ const Index = () => {
       )}
 
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-screen py-12">
-        <div className="mb-12">
-          <div className="relative w-56 h-56 mx-auto animate-spin-slow">
-            <div className="absolute inset-0 rounded-full"
+        <div className="mb-12 perspective">
+          {/* Use uploaded poker chip image */}
+          <div className="relative w-56 h-56 mx-auto preserve-3d animate-spin-slow">
+            {/* Front face - uploaded image */}
+            <div className="absolute inset-0 rounded-full backface-hidden"
               style={{
+                transform: 'translateZ(8px)',
                 background: 'url("/lovable-uploads/55aa8f9c-15e3-4dea-bb65-8f90722349bd.png")',
                 backgroundSize: 'contain',
                 backgroundPosition: 'center',
                 boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)'
               }}>
             </div>
+            
+            {/* Back face - same uploaded image */}
+            <div className="absolute inset-0 rounded-full backface-hidden"
+              style={{
+                transform: 'rotateY(180deg) translateZ(8px)',
+                background: 'url("/lovable-uploads/55aa8f9c-15e3-4dea-bb65-8f90722349bd.png")',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)'
+              }}>
+            </div>
+            
+            {/* Chip edge */}
+            <div className="absolute inset-0 rounded-full"
+              style={{
+                transform: 'rotateY(90deg)',
+                background: 'repeating-linear-gradient(to bottom, #FFD700, #000000, #FFD700 10px)',
+                width: '16px',
+                left: 'calc(50% - 8px)',
+                boxShadow: '0 0 8px rgba(255, 215, 0, 0.8)'
+              }}></div>
+              
+            {/* More chip edges for realistic 3D effect */}
+            <div className="absolute inset-0 rounded-full"
+              style={{
+                transform: 'rotateX(90deg)',
+                background: 'repeating-linear-gradient(to right, #FFD700, #000000, #FFD700 10px)',
+                height: '16px',
+                top: 'calc(50% - 8px)',
+                boxShadow: '0 0 8px rgba(255, 215, 0, 0.8)'
+              }}></div>
+              
+            {/* Dynamic light reflection */}
+            <div className="absolute inset-0 rounded-full overflow-hidden opacity-20 backface-hidden"
+              style={{
+                transform: 'translateZ(9px) rotateZ(-15deg)', 
+                background: 'linear-gradient(120deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 100%)'
+              }}></div>
+              
+            <div className="absolute inset-0 rounded-full overflow-hidden opacity-20 backface-hidden"
+              style={{
+                transform: 'rotateY(180deg) translateZ(9px) rotateZ(-15deg)', 
+                background: 'linear-gradient(120deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 100%)'
+              }}></div>
           </div>
         </div>
 
